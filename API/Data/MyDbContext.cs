@@ -7,6 +7,8 @@ public class MyDbContext : DbContext
 {
     // public DbSet<Customer> customer { get; set; } //kommer åt personen i databasen
     public DbSet<Movie> movies { get; set; }
+    public DbSet<Salon> salons { get; set; }
+    public DbSet<Seat> seats { get; set; }
 
     public MyDbContext(DbContextOptions<MyDbContext> options)
         : base(options) { }
@@ -22,6 +24,10 @@ public class MyDbContext : DbContext
      (DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseInMemoryDatabase(databaseName: "DataBase");
+    }
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Salon>().HasMany(s => s.Seats).WithOne(se => se.Salon);
     }
 
 }

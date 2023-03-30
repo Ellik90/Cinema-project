@@ -34,6 +34,8 @@ public class SeedData
             return movies;
         }
     }
+    //Lägg till en GetById
+    //Ändra SeedData till MovieSeedData
 
     public async Task<List<Movie>> GetForDeleteAll()
     {

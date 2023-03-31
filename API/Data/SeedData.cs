@@ -34,6 +34,20 @@ public class SeedData
             return movies;
         }
     }
+
+    public async Task<Movie> GetMovieById(int movieId)
+    {
+        try
+        {
+        List<Movie> getMovie = new();
+        getMovie = await _myDbContext.movies.ToListAsync();
+        return getMovie.Find(g => g.Id == movieId);
+        }
+        catch(Exception)
+        {
+            return null;
+        }
+    }
     //Lägg till en GetById
     //Ändra SeedData till MovieSeedData
 

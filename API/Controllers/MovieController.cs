@@ -23,8 +23,15 @@ public class MovieController : ControllerBase
         return Ok(movies);
     }
 
+    [HttpGet("movieId")]
+    public async Task<ActionResult<Movie>> GetMovieById(int movieId)
+    {
+        var oneMovie = await _seedData.GetMovieById(movieId);
+        return Ok(oneMovie);
+    }
+
     [HttpPost]
-    public async Task<ActionResult<List<Movie>>> CreateMovie(Movie movie)
+    public async Task<ActionResult<Movie>> CreateMovie(Movie movie)
     {
         await _seedData.CreateMovie(movie);
         return Ok(movie);

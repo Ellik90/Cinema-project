@@ -9,7 +9,9 @@ public class MyDbContext : DbContext
     // public DbSet<Customer> customer { get; set; } //kommer åt personen i databasen
     public DbSet<Movie> movies { get; set; }
     public DbSet<Salon> salons { get; set; }
+    public DbSet<MovieView> views { get; set; }
     public DbSet<Seat> seats { get; set; }
+
 
 
     public MyDbContext(DbContextOptions<MyDbContext> options)
@@ -30,10 +32,11 @@ public class MyDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Salon>().HasMany(s => s.Seats).WithOne(se => se.Salon);
+        
         modelBuilder.Entity<Movie>()
-                                    .HasMany(m => m.views)
-                                    .WithOne(v => v.Movie);
-                                    // .HasForeignKey(v => v.MovieId);
+       .HasMany(m => m.views)
+       .WithOne(v => v.Movie);
+
     }
 
 }

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using API.Models;
+using API.DTO;
 using API.Data;
 
 namespace API.Controllers;
@@ -17,47 +18,83 @@ public class MovieController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<Movie>>> GetMovies()
+    public async Task<ActionResult<List<MovieDTO>>> GetMovies()
     {
         var movies = await _seedData.GetMovies();
-        return Ok(movies);
+        if(movies == null)
+        {
+            return Ok(new List<MovieDTO>());
+        }
+        var movieDtos = movies.Select(m => new MovieDTO
+        {
+            MovieId = m.MovieId,
+            Title = m.Title,
+            MovieLength = m.MovieLength,
+            Language = m.Language,
+            Directors = m.Directors,
+            Actors = m.Actors
+        }).ToList();
+        return Ok(movieDtos);
     }
 
     [HttpGet("movieId")]
     public async Task<ActionResult<Movie>> GetMovieById(int movieId)
     {
         var oneMovie = await _seedData.GetMovieById(movieId);
-        return Ok(oneMovie);
+        var movieDto = new MovieDTO
+        {
+            Title = oneMovie.Title,
+            MovieLength = oneMovie.MovieLength,
+            Language = oneMovie.Language,
+            Directors = oneMovie.Directors,
+            Actors = oneMovie.Actors
+        };
+        return Ok(movieDto);
     }
 
     [HttpPost]
-    public async Task<ActionResult<Movie>> CreateMovie(Movie movie)
+    public async Task<ActionResult<MovieDTO>> CreateMovie(MovieDTO movieDto)
     {
+        var movie = new Movie
+        {
+           Title = movieDto.Title,
+            MovieLength = movieDto.MovieLength,
+            Language = movieDto.Language,
+            Directors = movieDto.Directors,
+            Actors = movieDto.Actors
+        };
         await _seedData.CreateMovie(movie);
         return Ok(movie);
-        
     }
 
+
     [HttpPut]
-    public async Task<ActionResult<Movie>> UpdateMovie(Movie movie)
+    public async Task<ActionResult<MovieDTO>> UpdateMovie(MovieDTO movieDto)
     {
+        var movie = await _seedData.GetMovieById(movieDto.MovieId);
+        movie.Title = movieDto.Title;
+        movie.MovieLength = movieDto.MovieLength;
+        movie.Language = movieDto.Language;
+        movie.Directors = movieDto.Directors;
+        movie.Actors = movieDto.Actors;
+
         await _seedData.UpdateMovie(movie);
-        return Ok(movie);
+        return Ok(movieDto);
     }
 
     [HttpDelete]
-    public async Task<ActionResult<Movie>> DeleteMovie(Movie movie)
+    public async Task<ActionResult<MovieDTO>> DeleteMovie(MovieDTO movieDto)
     {
+        var movie = await _seedData.GetMovieById(movieDto.MovieId);
         await _seedData.DeleteMovie(movie);
-        return Ok(movie);
+        return Ok(movieDto);
     }
 
     [HttpDelete("DeleteAll")]
-    public async Task<ActionResult<Movie>> DeleteAll()
+    public async Task<ActionResult<MovieDTO>> DeleteAll()
     {
         await _seedData.DeleteAll();
         return Ok();
     }
 
-    
 }

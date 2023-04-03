@@ -1,6 +1,7 @@
 
 using API.Models;
 using Microsoft.EntityFrameworkCore;
+using API.DTO;
 namespace API.Data;
 
 public class SeedData
@@ -12,43 +13,51 @@ public class SeedData
         _myDbContext = myDbContext;
     }
 
-
     public async Task<List<Movie>> GetMovies()
     {
         List<Movie> movies = new();
-        try
-        {
-            movies = await _myDbContext.movies.ToListAsync();
-            await _myDbContext.SaveChangesAsync();
-            if (movies.Count < 1)
-            {
-                throw new Exception();
-            }
-            return movies;
-        }
-        catch (Exception)
-        {
-            Movie movie = new("Empty movie list", "Svenska");
-            movies.Add(movie);
-            await _myDbContext.SaveChangesAsync();
-            return movies;
-        }
+
+        movies = await _myDbContext.movies.ToListAsync();
+        return movies;
+
     }
+
+    // public async Task<List<MovieDTO>> GetMovies()
+    // {
+    //     List<MovieDTO> movies = new();
+    //     try
+    //     {
+    //         movies = await _myDbContext.movies.ToListAsync();
+    //         await _myDbContext.SaveChangesAsync();
+    //         if (movies.Count < 1)
+    //         {
+    //             throw new Exception();
+    //         }
+    //         return movies;
+    //     }
+    //     catch (Exception)
+    //     {
+    //         MovieDTO movieDTO = new();
+    //         movies.Add(movieDTO);
+    //         await _myDbContext.SaveChangesAsync();
+    //         return movies;
+    //     }
+    // }
 
     public async Task<Movie> GetMovieById(int movieId)
     {
         try
         {
-        List<Movie> getMovie = new();
-        getMovie = await _myDbContext.movies.ToListAsync();
-        return getMovie.Find(g => g.Id == movieId);
+            List<Movie> getMovie = new();
+            getMovie = await _myDbContext.movies.ToListAsync();
+            return getMovie.Find(g => g.MovieId == movieId);
         }
-        catch(Exception)
+        catch (Exception)
         {
             return null;
         }
     }
-    //Lägg till en GetById
+
     //Ändra SeedData till MovieSeedData
 
     public async Task<List<Movie>> GetForDeleteAll()
@@ -60,6 +69,13 @@ public class SeedData
         return movies;
     }
 
+    // public async Task<Movie> CreateMovie(Movie movie)
+    // {
+    //     _myDbContext.movies.Add(movie);
+    //     await _myDbContext.SaveChangesAsync();
+    //     return movie;
+    // }
+
     public async Task<Movie> CreateMovie(Movie movie)
     {
         _myDbContext.movies.Add(movie);
@@ -69,15 +85,13 @@ public class SeedData
 
     public async Task<Movie> UpdateMovie(Movie movie)
     {
-        var existingMovie = await _myDbContext.movies.FindAsync(movie.Id);
+        var existingMovie = await _myDbContext.movies.FindAsync(movie.MovieId);
         if (existingMovie == null)
         {
             return null;
         }
         else
         {
-            existingMovie.Title = movie.Title;
-            existingMovie.Language = movie.Language;
             await _myDbContext.SaveChangesAsync();
             return existingMovie;
         }
@@ -85,7 +99,7 @@ public class SeedData
 
     public async Task<Movie> DeleteMovie(Movie movie)
     {
-        var existingMovie = await _myDbContext.movies.FindAsync(movie.Id);
+        var existingMovie = await _myDbContext.movies.FindAsync(movie.MovieId);
         if (existingMovie == null)
         {
             return null;

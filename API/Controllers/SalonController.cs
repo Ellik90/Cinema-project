@@ -19,14 +19,14 @@ public class SalonController : ControllerBase
 
 
     [HttpGet]
-    public async Task<ActionResult<List<Movie>>> GetSalons()
+    public async Task<ActionResult<List<Salon>>> GetSalons()
     {
         var salons = await _salonSeedData.GetSalons();
         return Ok(salons);
     }
 
     [HttpPost]
-    public async Task<ActionResult<List<Movie>>> CreateMovie(Salon salon)
+    public async Task<ActionResult<Movie>> CreateMovie(Salon salon)
     {
         await _salonSeedData.CreateNewSalons(salon);
         return Ok(salon);

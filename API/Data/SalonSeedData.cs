@@ -30,7 +30,8 @@ public class SalonSeedData
         }
     }
 
-    // Lägg till en GetById
+    //Lägg till getmoviebyid;
+
 
     public async Task<Salon> CreateNewSalons(Salon salon)
     {

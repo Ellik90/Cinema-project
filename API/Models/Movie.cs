@@ -1,20 +1,24 @@
 namespace API.Models;
 public class Movie
 {
-    public int Id { get; set; }
+    public int MovieId { get; set; }
     public string Title { get; set; }
-    // public int MovieViews { get; set; }
-    // public int MaxViews { get; set; }
+    public int MovieViewsShown { get; set; }
+    public int MaxViews { get; set; }
     public string Language { get; set; }
-    // public TimeSpan MovieLength { get; set; }
-    // public List<string> Directors { get; set; }
-    // public List<string> Actors { get; set; }
+    public int MovieLength { get; set; }
+    public List<MovieView> views { get; set; }
+    public List<string> Directors;
+    public List<string> Actors;
+    // public Movie OneMovie { get; set; }
 
-    public Movie(string title, string language)
+    public Movie(string title, string language, int movieLength)
     {
         Title = title;
         Language = language;
-        // MovieLength = movieLength;
+        MovieLength = movieLength;
+        // OneMovie = oneMovie;
        
     }
+    public Movie(){}
 }

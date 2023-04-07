@@ -30,6 +30,20 @@ public class SalonSeedData
         }
     }
 
+    public async Task<Salon> GetSalonById(int seatId)
+    {
+        try
+        {
+            List<Salon> getSalon = new();
+            getSalon = await _myDbContext.salons.ToListAsync();
+            return getSalon.Find(g => g.SalonId == seatId);
+        }
+        catch (Exception)
+        {
+            return null;
+        }
+    }
+
     public async Task<Salon> CreateNewSalons(Salon salon)
     {
         _myDbContext.salons.Add(salon);
@@ -66,7 +80,7 @@ public class SalonSeedData
         {
             _myDbContext.salons.Remove(existingSalon);
             await _myDbContext.SaveChangesAsync();
-            return existingSalon;;
+            return existingSalon; ;
         }
     }
 }

@@ -32,7 +32,7 @@ public class MyDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Salon>().HasMany(s => s.Seats).WithOne(se => se.Salon);
-        
+
         modelBuilder.Entity<Movie>()
        .HasMany(m => m.views)
        .WithOne(v => v.Movie);

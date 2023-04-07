@@ -15,6 +15,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<API.Data.SeedData>();
 builder.Services.AddScoped<API.Data.SalonSeedData>();
 builder.Services.AddScoped<API.Data.MovieViewSeedData>();
+builder.Services.AddScoped<API.Data.SeatSeedData>();
 builder.Services.AddDbContext<API.Data.MyDbContext>
 (o => o.UseInMemoryDatabase("DataBase"));
 var app = builder.Build();

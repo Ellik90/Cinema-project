@@ -1,16 +1,17 @@
-namespace API.Models;
-public class Seat
+using API.Models;
+namespace API.DTO;
+
+public class SeatDTO
 {
     public int SeatId { get; set; }
     public int SalonId { get; set; }
     public Salon Salon;
 
-    public Seat(int seatId, int salonId, Salon salon)
+    public SeatDTO(int seatId, int salonId)
     {
         SeatId = seatId;
         SalonId = salonId;
-        Salon = salon;
     }
 
-    public Seat(){}
+    public SeatDTO(){}
 }

@@ -38,7 +38,7 @@ public class MovieController : ControllerBase
     }
 
     [HttpGet("movieId")]
-    public async Task<ActionResult<Movie>> GetMovieById(int movieId)
+    public async Task<ActionResult<MovieDTO>> GetMovieById(int movieId) // ÄNDRADE DENNA, KOLLA SÅ DET STÄMMER
     {
         var oneMovie = await _seedData.GetMovieById(movieId);
         var movieDto = new MovieDTO
@@ -64,7 +64,7 @@ public class MovieController : ControllerBase
             Actors = movieDto.Actors
         };
         await _seedData.CreateMovie(movie);
-        return Ok(movie);
+        return Ok(movieDto);
     }
 
 

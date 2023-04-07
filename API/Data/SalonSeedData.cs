@@ -30,9 +30,6 @@ public class SalonSeedData
         }
     }
 
-    //Lägg till getmoviebyid;
-
-
     public async Task<Salon> CreateNewSalons(Salon salon)
     {
         _myDbContext.salons.Add(salon);

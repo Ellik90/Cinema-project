@@ -23,8 +23,33 @@ public class MovieViewSeedData
 
     public async Task<List<MovieView>> GetMovieViews()
     {
-        return await _myDbContext.views.ToListAsync();
+        List<MovieView> movieViews = new();
+
+        movieViews = await _myDbContext.views.ToListAsync();
+        return movieViews;
+
     }
+
+    public async Task<List<MovieView>> GetUpcomingMovieViews()
+    {
+        var upcomingViews = await _myDbContext.views
+            .Include(v => v.Salon)
+            .ThenInclude(s => s.Movie)
+            .Where(v => v.Date >= DateTime.Now)
+            .Select(v => new MovieView
+            {
+                MovieId = v.MovieId,
+                Date = v.Date,
+                SalonId = v.SalonId
+            })
+            .ToListAsync();
+
+        return upcomingViews;
+    }
+
+
+
+
 
     public async Task<MovieView> UpdateMovieView(MovieView movieView)
     {

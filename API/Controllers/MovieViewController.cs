@@ -11,10 +11,11 @@ namespace API.Controllers;
 public class MovieViewController : ControllerBase
 {
     MovieViewSeedData _movieViewSeedData;
-
-    public MovieViewController(MovieViewSeedData movieViewSeedData)
+    SeedData _seedData;
+    public MovieViewController(MovieViewSeedData movieViewSeedData, SeedData seedData)
     {
         _movieViewSeedData = movieViewSeedData;
+        _seedData = seedData;
     }
 
 
@@ -32,12 +33,47 @@ public class MovieViewController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<MovieViewDTO>> GetMovieViews()
+    public async Task<ActionResult<List<MovieViewDTO>>> GetAllMovieViews()
     {
-        var movieViews = await _movieViewSeedData.GetMovieViews();
-        // ska bara hämta alla kommande visningar
-        return Ok(movieViews.Select(v => new MovieViewDTO(v.MovieViewId, v.MovieId, v.SalonId, v.Date)));
+        var views = await _movieViewSeedData.GetMovieViews();
+        if (views == null)
+        {
+            return Ok(new List<MovieViewDTO>());
+        }
+        var movieViewDTO = views.Select(v => new MovieViewDTO
+        {
+            MovieViewId = v.MovieViewId,
+            MovieTitle = v.Movie?.Title,
+            MovieId = v.MovieId,
+            SalonId = v.SalonId,
+            SalonName = v.Salon?.SalonName,
+            Date = v.Date
+        }).ToList();
+        return Ok(movieViewDTO);
     }
+
+    [HttpGet("getUpcomingViews")]
+    public async Task<ActionResult<List<MovieViewDTO>>> GetUpcomingMovieViews()
+    {
+        var movies = await _seedData.GetMovies();
+        var movieViews = await _movieViewSeedData.GetMovieViews();
+        var upcomingMovieViews = movieViews.Where(v => v.Date >= DateTime.Now).ToList();
+        var movieViewDTOs = upcomingMovieViews.Select(v => new MovieViewDTO
+        {
+            MovieViewId = v.MovieViewId,
+            MovieTitle = movies.FirstOrDefault(m => m.MovieId == v.MovieId)?.Title,
+            MovieId = v.MovieId,
+            SalonId = v.SalonId,
+            SalonName = v.Salon?.SalonName,
+            Date = v.Date
+        }).ToList();
+
+        return Ok(movieViewDTOs);
+    }
+
+
+
+
 
     [HttpPut]
     public async Task<ActionResult> PutMovieViews(MovieViewDTO movieViewDTO)

@@ -37,6 +37,8 @@ public class MyDbContext : DbContext
        .HasMany(m => m.views)
        .WithOne(v => v.Movie);
 
+       modelBuilder.Entity<MovieView>().HasOne(m => m.Movie).WithMany(s => s.views);
+
     }
 
 }

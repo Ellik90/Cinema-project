@@ -26,11 +26,13 @@ public class MovieViewController : ControllerBase
         {
             Date = movieViewDTO.Date,
             MovieId = movieViewDTO.MovieId,
-            SalonId = movieViewDTO.SalonId
+            SalonId = movieViewDTO.SalonId,
+            MovieTitle = movieViewDTO.MovieTitle // Tilldelar MovieTitle från MovieViewDTO till movieView
         };
         await _movieViewSeedData.CreateNewMovieView(movieView);
         return Ok(movieViewDTO);
     }
+
 
     [HttpGet]
     public async Task<ActionResult<List<MovieViewDTO>>> GetAllMovieViews()
@@ -71,10 +73,6 @@ public class MovieViewController : ControllerBase
         return Ok(movieViewDTOs);
     }
 
-
-
-
-
     [HttpPut]
     public async Task<ActionResult> PutMovieViews(MovieViewDTO movieViewDTO)
     {
@@ -82,6 +80,7 @@ public class MovieViewController : ControllerBase
 
         var movieView = movieViews.Find(m => m.MovieViewId == movieViewDTO.MovieViewId);
         movieView.MovieViewId = movieViewDTO.MovieViewId;
+        movieView.MovieTitle = movieViewDTO?.MovieTitle; // Tilldelar MovieTitle från MovieViewDTO till movieView
         movieView.Date = movieViewDTO.Date;
         movieView.MovieId = movieViewDTO.MovieId;
         movieView.SalonId = movieViewDTO.SalonId;
@@ -89,6 +88,7 @@ public class MovieViewController : ControllerBase
         await _movieViewSeedData.UpdateMovieView(movieView);
         return Ok();
     }
+
 
     [HttpDelete]
     public async Task<ActionResult<MovieViewDTO>> DeleteMovieViewById(MovieViewDTO movieViewDTO)

@@ -22,7 +22,7 @@ public class ReservationController : ControllerBase
     {
         var reservation = new Reservation
         {
-             ReservationId = reservationDTO.ReservationId,
+            ReservationId = reservationDTO.ReservationId,
             CustomerName = reservationDTO.CustomerName,
             PhoneNumber = reservationDTO.PhoneNumber,
             ShowId = reservationDTO.ShowId,
@@ -49,10 +49,32 @@ public class ReservationController : ControllerBase
             ShowId = r.ShowId,
             NumberOfSeats = r.NumberOfSeats,
             DateForReservation = r.DateForReservation
-            
+
         }).ToList();
         return Ok(reservationDTO);
     }
+
+    [HttpGet("{showId}")]
+    public async Task<ActionResult<List<ReservationDTO>>> GetReservationsForShow(int showId)
+    {
+        var reservations = await _reservationSeedData.GetReservationsForShow(showId);
+
+        if (reservations == null || reservations.Count() == 0)
+        {
+            return NotFound();
+        }
+
+        return reservations.Select(r => new ReservationDTO
+        {
+            ReservationId = r.ReservationId,
+            CustomerName = r.CustomerName,
+            PhoneNumber = r.PhoneNumber,
+            ShowId = r.ShowId,
+            NumberOfSeats = r.NumberOfSeats,
+            DateForReservation = r.DateForReservation
+        }).ToList();
+    }
+
 
     // [HttpGet("getUpcomingViews")]
     // public async Task<ActionResult<List<MovieViewDTO>>> GetUpcomingMovieViews()

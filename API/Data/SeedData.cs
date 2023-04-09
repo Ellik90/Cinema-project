@@ -22,27 +22,6 @@ public class SeedData
 
     }
 
-    // public async Task<List<MovieDTO>> GetMovies()
-    // {
-    //     List<MovieDTO> movies = new();
-    //     try
-    //     {
-    //         movies = await _myDbContext.movies.ToListAsync();
-    //         await _myDbContext.SaveChangesAsync();
-    //         if (movies.Count < 1)
-    //         {
-    //             throw new Exception();
-    //         }
-    //         return movies;
-    //     }
-    //     catch (Exception)
-    //     {
-    //         MovieDTO movieDTO = new();
-    //         movies.Add(movieDTO);
-    //         await _myDbContext.SaveChangesAsync();
-    //         return movies;
-    //     }
-    // }
 
     public async Task<Movie> GetMovieById(int movieId)
     {
@@ -58,8 +37,6 @@ public class SeedData
         }
     }
 
-    //Ändra SeedData till MovieSeedData
-
     public async Task<List<Movie>> GetForDeleteAll()
     {
         List<Movie> movies = new();
@@ -68,13 +45,6 @@ public class SeedData
         await _myDbContext.SaveChangesAsync();
         return movies;
     }
-
-    // public async Task<Movie> CreateMovie(Movie movie)
-    // {
-    //     _myDbContext.movies.Add(movie);
-    //     await _myDbContext.SaveChangesAsync();
-    //     return movie;
-    // }
 
     public async Task<Movie> CreateMovie(Movie movie)
     {

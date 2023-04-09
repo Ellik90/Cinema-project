@@ -30,6 +30,20 @@ public class MovieViewSeedData
 
     }
 
+    // public async Task<MovieView> GetMovieViewById(int movieViewId)
+    // {
+    //     try
+    //     {
+    //         List<MovieView> getMovieView = new();
+    //         getMovieView = await _myDbContext.views.ToListAsync();
+    //         return getMovieView.Find(g => g.MovieViewId == movieViewId);
+    //     }
+    //     catch (Exception)
+    //     {
+    //         return null;
+    //     }
+    // }
+
     public async Task<List<MovieView>> GetUpcomingMovieViews()
     {
         var upcomingViews = await _myDbContext.views
@@ -46,9 +60,6 @@ public class MovieViewSeedData
 
         return upcomingViews;
     }
-
-
-
 
 
     public async Task<MovieView> UpdateMovieView(MovieView movieView)

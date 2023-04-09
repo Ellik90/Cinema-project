@@ -21,7 +21,7 @@ public class MovieController : ControllerBase
     public async Task<ActionResult<List<MovieDTO>>> GetMovies()
     {
         var movies = await _seedData.GetMovies();
-        if(movies == null)
+        if (movies == null)
         {
             return Ok(new List<MovieDTO>());
         }
@@ -57,7 +57,8 @@ public class MovieController : ControllerBase
     {
         var movie = new Movie
         {
-           Title = movieDto.Title,
+            Title = movieDto.Title,
+            Description = movieDto.Description,
             MovieLength = movieDto.MovieLength,
             Language = movieDto.Language,
             Directors = movieDto.Directors,
@@ -72,7 +73,8 @@ public class MovieController : ControllerBase
     public async Task<ActionResult<MovieDTO>> UpdateMovie(MovieDTO movieDto)
     {
         var movie = await _seedData.GetMovieById(movieDto.MovieId);
-        movie.Title = movieDto.Title;
+        movie.Title = movieDto?.Title;
+        movie.Description = movieDto.Description;
         movie.MovieLength = movieDto.MovieLength;
         movie.Language = movieDto.Language;
         movie.Directors = movieDto.Directors;
@@ -83,11 +85,26 @@ public class MovieController : ControllerBase
     }
 
     [HttpDelete]
-    public async Task<ActionResult<MovieDTO>> DeleteMovie(MovieDTO movieDto)
+    public async Task<ActionResult<MovieDTO>> DeleteMovieById(MovieDTO movieDTO)
     {
-        var movie = await _seedData.GetMovieById(movieDto.MovieId);
-        await _seedData.DeleteMovie(movie);
-        return Ok(movieDto);
+        var movie = new Movie()
+        {
+            MovieId = movieDTO.MovieId,
+            Title = movieDTO.Title,
+            Language = movieDTO.Language,
+            MovieLength = movieDTO.MovieLength
+        };
+        var deletedMovie = await _seedData.DeleteMovie(movie);
+
+        var deletedMovieDTO = new MovieDTO()
+        {
+            MovieId = deletedMovie.MovieId,
+            Title = deletedMovie.Title,
+            Language = deletedMovie.Language,
+            MovieLength = deletedMovie.MovieLength
+
+        };
+        return Ok(deletedMovieDTO);
     }
 
     [HttpDelete("DeleteAll")]

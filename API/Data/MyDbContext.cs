@@ -11,6 +11,7 @@ public class MyDbContext : DbContext
     public DbSet<Salon> salons { get; set; }
     public DbSet<MovieView> views { get; set; }
     public DbSet<Seat> seats { get; set; }
+    public DbSet<Reservation> reservations { get; set; }
 
 
 

@@ -61,9 +61,11 @@ public class MovieController : ControllerBase
             Description = movieDto.Description,
             MovieLength = movieDto.MovieLength,
             Language = movieDto.Language,
+            MaxViews = movieDto.MaxViews,
             Directors = movieDto.Directors,
             Actors = movieDto.Actors
         };
+
         await _seedData.CreateMovie(movie);
         return Ok(movieDto);
     }

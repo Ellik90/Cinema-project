@@ -1,5 +1,6 @@
 using API.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Sqlite;
 using API.DTO;
 
 namespace API.Data;
@@ -29,6 +30,28 @@ public class MovieViewSeedData
         return movieViews;
 
     }
+
+    public async Task<MovieView> GetMovieViewById(int movieViewId)
+    {
+        try
+        {
+            return await _myDbContext.views.FindAsync(movieViewId);
+        }
+        catch (Exception)
+        {
+            return null;
+        }
+    }
+
+    public async Task<List<MovieView>> GetMovieViewsByMovieId(int movieId)
+    {
+        var movieViews = await _myDbContext.views
+            .Where(mv => mv.MovieId == movieId)
+            .ToListAsync();
+        return movieViews;
+    }
+
+
 
     // public async Task<MovieView> GetMovieViewById(int movieViewId)
     // {

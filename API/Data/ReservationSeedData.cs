@@ -1,5 +1,7 @@
 using API.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.Sqlite;
+
 namespace API.Data;
 
 public class ReservationSeedData

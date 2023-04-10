@@ -19,19 +19,43 @@ public class MovieViewController : ControllerBase
     }
 
 
+    // [HttpPost]
+    // public async Task<ActionResult<MovieViewDTO>> CreateNewMovieView(MovieViewDTO movieViewDTO)
+    // {
+    //     var movieView = new MovieView()
+    //     {
+    //         Date = movieViewDTO.Date,
+    //         MovieId = movieViewDTO.MovieId,
+    //         SalonId = movieViewDTO.SalonId,
+    //         MovieTitle = movieViewDTO.MovieTitle // Tilldelar MovieTitle från MovieViewDTO till movieView
+    //     };
+    //     await _movieViewSeedData.CreateNewMovieView(movieView);
+    //     return Ok(movieViewDTO);
+    // }
+
     [HttpPost]
     public async Task<ActionResult<MovieViewDTO>> CreateNewMovieView(MovieViewDTO movieViewDTO)
     {
+        var movie = await _seedData.GetMovieById(movieViewDTO.MovieId);
+        var movieViews = await _movieViewSeedData.GetMovieViewsByMovieId(movieViewDTO.MovieId);
+
+        if (movieViews.Count >= movie.MaxViews)
+        {
+            return BadRequest($"Film {movie.Title} har redan nått max antal visningar.");
+        }
+
         var movieView = new MovieView()
         {
             Date = movieViewDTO.Date,
             MovieId = movieViewDTO.MovieId,
             SalonId = movieViewDTO.SalonId,
-            MovieTitle = movieViewDTO.MovieTitle // Tilldelar MovieTitle från MovieViewDTO till movieView
+            MovieTitle = movieViewDTO.MovieTitle
         };
+
         await _movieViewSeedData.CreateNewMovieView(movieView);
         return Ok(movieViewDTO);
     }
+
 
 
     [HttpGet]

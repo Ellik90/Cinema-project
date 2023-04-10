@@ -7,8 +7,8 @@ public class MovieView
     public DateTime Date { get; set; }
     public int MovieId { get; set; }
     public int SalonId { get; set; }
-    public Movie Movie;
-    public Salon Salon;
+    public Movie Movie { get; set; }
+    public Salon Salon { get; set; }
 
     public MovieView(string movieTitle, int movieId, int salonId)
     {

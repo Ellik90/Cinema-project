@@ -14,12 +14,13 @@ public class Movie
     public List<string> Actors;
     // public Movie OneMovie { get; set; }
 
-    public Movie(string title, string description, string language, int movieLength)
+    public Movie(string title, string description, string language, int movieLength, int maxViews)
     {
         Title = title;
         Description = description;
         Language = language;
         MovieLength = movieLength;
+        MaxViews = maxViews;
       
         // OneMovie = oneMovie;
        

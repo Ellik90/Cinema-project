@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using API.Models;
 using API.DTO;
 using API.Data;
+using System.Linq;
+
 
 namespace API.Controllers;
 
@@ -18,32 +20,24 @@ public class MovieViewController : ControllerBase
         _seedData = seedData;
     }
 
-
+    // DENNA ÄR MIN KORREKTA METOD
     // [HttpPost]
-    // public async Task<ActionResult<MovieViewDTO>> CreateNewMovieView(MovieViewDTO movieViewDTO)
+    // public async Task<ActionResult<MovieViewDTO>> CreateNewMovieViews(MovieViewDTO movieViewDTO)
     // {
-    //     var movieView = new MovieView()
-    //     {
-    //         Date = movieViewDTO.Date,
-    //         MovieId = movieViewDTO.MovieId,
-    //         SalonId = movieViewDTO.SalonId,
-    //         MovieTitle = movieViewDTO.MovieTitle // Tilldelar MovieTitle från MovieViewDTO till movieView
-    //     };
-    //     await _movieViewSeedData.CreateNewMovieView(movieView);
-    //     return Ok(movieViewDTO);
-    // }
+    //     // Hämta alla befintliga visningar som sker i samma salong på samma tidpunkt
+    //     var existingMovieViews = await _movieViewSeedData.GetMovieViewsByDateAndSalonId(movieViewDTO.Date, movieViewDTO.SalonId)
 
-    // [HttpPost]
-    // public async Task<ActionResult<MovieViewDTO>> CreateNewMovieView(MovieViewDTO movieViewDTO)
-    // {
-    //     var movie = await _seedData.GetMovieById(movieViewDTO.MovieId);
-    //     var movieViews = await _movieViewSeedData.GetMovieViewsByMovieId(movieViewDTO.MovieId);
 
-    //     if (movieViews.Count >= movie.MaxViews)
+
+    //     foreach (var existingMovieView in existingMovieViews)
     //     {
-    //         return BadRequest($"Film {movie.Title} har redan nått max antal visningar.");
+    //         if (existingMovieView.Date == movieViewDTO.Date)
+    //         {
+    //             return BadRequest($"En annan film, {existingMovieView.MovieTitle}, visas i samma salong vid samma tidpunkt.");
+    //         }
     //     }
 
+    //     // Skapa den nya visningen om ingen kollision hittades
     //     var movieView = new MovieView()
     //     {
     //         Date = movieViewDTO.Date,
@@ -51,27 +45,32 @@ public class MovieViewController : ControllerBase
     //         SalonId = movieViewDTO.SalonId,
     //         MovieTitle = movieViewDTO.MovieTitle
     //     };
+    //     var addedMovieView = await _movieViewSeedData.CreateNewMovieView(movieView);
+    //      var addedMovieViewDTO = new MovieViewDTO()
+    //     {
+    //         Date = addedMovieView.Date,
+    //         MovieId = addedMovieView.MovieId,
+    //         SalonId = addedMovieView.SalonId,
+    //         MovieTitle = addedMovieView.MovieTitle
+    //     };
 
-    //     await _movieViewSeedData.CreateNewMovieView(movieView);
-    //     return Ok(movieViewDTO);
+    //     return Ok(addedMovieViewDTO);
     // }
+
 
     [HttpPost]
     public async Task<ActionResult<MovieViewDTO>> CreateNewMovieViews(MovieViewDTO movieViewDTO)
     {
-        // Hämta alla befintliga visningar som sker i samma salong på samma tidpunkt
-        var existingMovieViews = await _movieViewSeedData.GetMovieViewsByDateAndSalonId(movieViewDTO.Date, movieViewDTO.SalonId);
+        var existingMovieViews = (await _movieViewSeedData.GetMovieViewsByDateAndSalonId(movieViewDTO.Date, movieViewDTO.SalonId))
+            .Where(existing => existing.Date == movieViewDTO.Date);
 
-        // Gå igenom varje befintlig visning och kontrollera om den krockar med den nya visningen
-        foreach (var existingMovieView in existingMovieViews)
+
+        if (existingMovieViews.Any())
         {
-            if (existingMovieView.Date == movieViewDTO.Date)
-            {
-                return BadRequest($"En annan film, {existingMovieView.MovieTitle}, visas i samma salong vid samma tidpunkt.");
-            }
+            var existingMovieTitles = string.Join(", ", existingMovieViews.Select(existing => existing.MovieTitle));
+            return BadRequest($"En annan film, {existingMovieTitles}, visas i samma salong vid samma tidpunkt.");
         }
 
-        // Skapa den nya visningen om ingen kollision hittades
         var movieView = new MovieView()
         {
             Date = movieViewDTO.Date,
@@ -79,8 +78,9 @@ public class MovieViewController : ControllerBase
             SalonId = movieViewDTO.SalonId,
             MovieTitle = movieViewDTO.MovieTitle
         };
+
         var addedMovieView = await _movieViewSeedData.CreateNewMovieView(movieView);
-         var addedMovieViewDTO = new MovieViewDTO()
+        var addedMovieViewDTO = new MovieViewDTO()
         {
             Date = addedMovieView.Date,
             MovieId = addedMovieView.MovieId,
@@ -90,6 +90,7 @@ public class MovieViewController : ControllerBase
 
         return Ok(addedMovieViewDTO);
     }
+
 
 
     [HttpGet]
@@ -130,6 +131,8 @@ public class MovieViewController : ControllerBase
 
         return Ok(movieViewDTOs);
     }
+
+
 
     [HttpPut]
     public async Task<ActionResult> PutMovieViews(MovieViewDTO movieViewDTO)

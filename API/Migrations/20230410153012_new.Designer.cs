@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20230410063537_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20230410153012_new")]
+    partial class @new
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,8 +26,18 @@ namespace API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Actors")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Description")
                         .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Directors")
+                        .IsRequired()
+                        .HasMaxLength(1000)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Language")
@@ -46,6 +56,9 @@ namespace API.Migrations
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("YearOfPublished")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("MovieId");
 
@@ -75,7 +88,9 @@ namespace API.Migrations
 
                     b.HasIndex("MovieId");
 
-                    b.ToTable("views");
+                    b.HasIndex("SalonId");
+
+                    b.ToTable("movieViews");
                 });
 
             modelBuilder.Entity("API.Models.Reservation", b =>
@@ -91,6 +106,9 @@ namespace API.Migrations
                     b.Property<DateTime>("DateForReservation")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("MovieViewId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("NumberOfSeats")
                         .HasColumnType("INTEGER");
 
@@ -98,10 +116,9 @@ namespace API.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("ShowId")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("ReservationId");
+
+                    b.HasIndex("MovieViewId");
 
                     b.ToTable("reservations");
                 });
@@ -146,12 +163,31 @@ namespace API.Migrations
             modelBuilder.Entity("API.Models.MovieView", b =>
                 {
                     b.HasOne("API.Models.Movie", "Movie")
-                        .WithMany("views")
+                        .WithMany("movieViews")
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("API.Models.Salon", "Salon")
+                        .WithMany("Views")
+                        .HasForeignKey("SalonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Movie");
+
+                    b.Navigation("Salon");
+                });
+
+            modelBuilder.Entity("API.Models.Reservation", b =>
+                {
+                    b.HasOne("API.Models.MovieView", "MovieView")
+                        .WithMany("Reservations")
+                        .HasForeignKey("MovieViewId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MovieView");
                 });
 
             modelBuilder.Entity("API.Models.Seat", b =>
@@ -167,12 +203,19 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Models.Movie", b =>
                 {
-                    b.Navigation("views");
+                    b.Navigation("movieViews");
+                });
+
+            modelBuilder.Entity("API.Models.MovieView", b =>
+                {
+                    b.Navigation("Reservations");
                 });
 
             modelBuilder.Entity("API.Models.Salon", b =>
                 {
                     b.Navigation("Seats");
+
+                    b.Navigation("Views");
                 });
 #pragma warning restore 612, 618
         }

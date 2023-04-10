@@ -13,6 +13,25 @@ public class ReservationSeedData
         _myDbContext = myDbContext;
     }
 
+    public async Task<int> GetAvailableSeatsForShow(int movieViewId)
+    {
+        var show = await _myDbContext.movieViews
+        .Include(mv => mv.Salon)
+        .FirstOrDefaultAsync(s => s.MovieViewId == movieViewId);
+
+        if (show == null)
+        {
+            throw new ArgumentException("Invalid MovieViewId");
+        }
+
+        var reservedSeats = await _myDbContext.reservations
+            .Where(r => r.MovieViewId == movieViewId)
+            .SumAsync(r => r.NumberOfSeats);
+
+        return show.Salon.NumberOfSeats - reservedSeats;
+    }
+
+
     public async Task<List<Reservation>> GetReservations()
     {
         List<Reservation> reservations = new();
@@ -32,10 +51,10 @@ public class ReservationSeedData
         }
     }
 
-    public async Task<IEnumerable<Reservation>> GetReservationsForShow(int showId)
+    public async Task<IEnumerable<Reservation>> GetReservationsForShow(int movieViewId)
     {
         return await _myDbContext.reservations
-            .Where(r => r.ShowId == showId)
+            .Where(r => r.MovieViewId == movieViewId)
             .ToListAsync();
     }
 

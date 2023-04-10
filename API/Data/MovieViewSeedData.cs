@@ -16,7 +16,7 @@ public class MovieViewSeedData
 
     public async Task<MovieView> CreateNewMovieView(MovieView movieView)
     {
-        await _myDbContext.views.AddAsync(movieView);
+        await _myDbContext.movieViews.AddAsync(movieView);
         //  _myDbContext.movies.Include(m => m.MovieId);
         await _myDbContext.SaveChangesAsync();
         return movieView;
@@ -26,7 +26,7 @@ public class MovieViewSeedData
     {
         List<MovieView> movieViews = new();
 
-        movieViews = await _myDbContext.views.ToListAsync();
+        movieViews = await _myDbContext.movieViews.ToListAsync();
         return movieViews;
 
     }
@@ -35,7 +35,7 @@ public class MovieViewSeedData
     {
         try
         {
-            return await _myDbContext.views.FindAsync(movieViewId);
+            return await _myDbContext.movieViews.FindAsync(movieViewId);
         }
         catch (Exception)
         {
@@ -45,11 +45,18 @@ public class MovieViewSeedData
 
     public async Task<List<MovieView>> GetMovieViewsByMovieId(int movieId)
     {
-        var movieViews = await _myDbContext.views
+        var movieViews = await _myDbContext.movieViews
             .Where(mv => mv.MovieId == movieId)
             .ToListAsync();
         return movieViews;
     }
+
+    public async Task<List<MovieView>> GetMovieViewsByDateAndSalonId(DateTime date, int salonId)
+    {
+        var movieViews = await _myDbContext.movieViews.Where(mv => mv.Date == date && mv.SalonId == salonId).ToListAsync();
+        return movieViews;
+    }
+
 
 
 
@@ -69,9 +76,9 @@ public class MovieViewSeedData
 
     public async Task<List<MovieView>> GetUpcomingMovieViews()
     {
-        var upcomingViews = await _myDbContext.views
+        var upcomingViews = await _myDbContext.movieViews
             .Include(v => v.Salon)
-            .ThenInclude(s => s.Movie)
+            .Include(v => v.Movie)
             .Where(v => v.Date >= DateTime.Now)
             .Select(v => new MovieView
             {
@@ -87,7 +94,7 @@ public class MovieViewSeedData
 
     public async Task<MovieView> UpdateMovieView(MovieView movieView)
     {
-        var existingMovieView = await _myDbContext.views.FindAsync(movieView.MovieViewId);
+        var existingMovieView = await _myDbContext.movieViews.FindAsync(movieView.MovieViewId);
         if (existingMovieView == null)
         {
             throw new Exception("Movie view cant be found");
@@ -101,14 +108,14 @@ public class MovieViewSeedData
 
     public async Task<MovieView> DeleteMovieById(MovieView movieView)
     {
-        var existingMovieView = await _myDbContext.views.FindAsync(movieView.MovieViewId);
+        var existingMovieView = await _myDbContext.movieViews.FindAsync(movieView.MovieViewId);
         if (existingMovieView == null)
         {
             throw new Exception("Movie view cant be found");
         }
         else
         {
-            _myDbContext.views.Remove(existingMovieView);
+            _myDbContext.movieViews.Remove(existingMovieView);
             await _myDbContext.SaveChangesAsync();
             return existingMovieView;
         }

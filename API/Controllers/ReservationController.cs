@@ -17,21 +17,49 @@ public class ReservationController : ControllerBase
     }
 
 
+
+    // [HttpPost]
+    // public async Task<ActionResult<ReservationDTO>> CreateNewReservation(ReservationDTO reservationDTO)
+    // {
+    //     var reservation = new Reservation
+    //     {
+    //         ReservationId = reservationDTO.ReservationId,
+    //         CustomerName = reservationDTO.CustomerName,
+    //         PhoneNumber = reservationDTO.PhoneNumber,
+    //         ShowId = reservationDTO.ShowId,
+    //         NumberOfSeats = reservationDTO.NumberOfSeats,
+    //         DateForReservation = reservationDTO.DateForReservation
+    //     };
+    //     await _reservationSeedData.CreateNewReservations(reservation);
+    //     return Ok(reservationDTO);
+    // }
+
     [HttpPost]
     public async Task<ActionResult<ReservationDTO>> CreateNewReservation(ReservationDTO reservationDTO)
     {
-        var reservation = new Reservation
+        var availableSeats = await _reservationSeedData.GetAvailableSeatsForShow(reservationDTO.MovieViewId);
+
+        if (availableSeats >= reservationDTO.NumberOfSeats)
         {
-            ReservationId = reservationDTO.ReservationId,
-            CustomerName = reservationDTO.CustomerName,
-            PhoneNumber = reservationDTO.PhoneNumber,
-            ShowId = reservationDTO.ShowId,
-            NumberOfSeats = reservationDTO.NumberOfSeats,
-            DateForReservation = reservationDTO.DateForReservation
-        };
-        await _reservationSeedData.CreateNewReservations(reservation);
-        return Ok(reservationDTO);
+            var reservation = new Reservation
+            {
+                CustomerName = reservationDTO.CustomerName,
+                PhoneNumber = reservationDTO.PhoneNumber,
+                MovieViewId = reservationDTO.MovieViewId,
+                NumberOfSeats = reservationDTO.NumberOfSeats,
+                DateForReservation = reservationDTO.DateForReservation
+            };
+
+            await _reservationSeedData.CreateNewReservations(reservation);
+
+            return Ok(reservationDTO);
+        }
+        else
+        {
+            return BadRequest("Not enough available seats");
+        }
     }
+
 
     [HttpGet]
     public async Task<ActionResult<List<ReservationDTO>>> GetAllMovieViews()
@@ -46,7 +74,7 @@ public class ReservationController : ControllerBase
             ReservationId = r.ReservationId,
             CustomerName = r.CustomerName,
             PhoneNumber = r.PhoneNumber,
-            ShowId = r.ShowId,
+            MovieViewId = r.MovieViewId,
             NumberOfSeats = r.NumberOfSeats,
             DateForReservation = r.DateForReservation
 
@@ -54,10 +82,10 @@ public class ReservationController : ControllerBase
         return Ok(reservationDTO);
     }
 
-    [HttpGet("{showId}")]
-    public async Task<ActionResult<List<ReservationDTO>>> GetReservationsForShow(int showId)
+    [HttpGet("{movieViewId}")]
+    public async Task<ActionResult<List<ReservationDTO>>> GetReservationsForShow(int movieViewId)
     {
-        var reservations = await _reservationSeedData.GetReservationsForShow(showId);
+        var reservations = await _reservationSeedData.GetReservationsForShow(movieViewId);
 
         if (reservations == null || reservations.Count() == 0)
         {
@@ -69,71 +97,10 @@ public class ReservationController : ControllerBase
             ReservationId = r.ReservationId,
             CustomerName = r.CustomerName,
             PhoneNumber = r.PhoneNumber,
-            ShowId = r.ShowId,
+            MovieViewId = r.MovieViewId,
             NumberOfSeats = r.NumberOfSeats,
             DateForReservation = r.DateForReservation
         }).ToList();
     }
-
-
-    // [HttpGet("getUpcomingViews")]
-    // public async Task<ActionResult<List<MovieViewDTO>>> GetUpcomingMovieViews()
-    // {
-    //     var movies = await _seedData.GetMovies();
-    //     var movieViews = await _movieViewSeedData.GetMovieViews();
-    //     var upcomingMovieViews = movieViews.Where(v => v.Date >= DateTime.Now).ToList();
-    //     var movieViewDTOs = upcomingMovieViews.Select(v => new MovieViewDTO
-    //     {
-    //         MovieViewId = v.MovieViewId,
-    //         MovieTitle = movies.FirstOrDefault(m => m.MovieId == v.MovieId)?.Title,
-    //         MovieId = v.MovieId,
-    //         SalonId = v.SalonId,
-    //         SalonName = v.Salon?.SalonName,
-    //         Date = v.Date
-    //     }).ToList();
-
-    //     return Ok(movieViewDTOs);
-    // }
-
-
-
-
-
-    // [HttpPut]
-    // public async Task<ActionResult> PutMovieViews(MovieViewDTO movieViewDTO)
-    // {
-    //     var movieViews = await _movieViewSeedData.GetMovieViews();
-
-    //     var movieView = movieViews.Find(m => m.MovieViewId == movieViewDTO.MovieViewId);
-    //     movieView.MovieViewId = movieViewDTO.MovieViewId;
-    //     movieView.Date = movieViewDTO.Date;
-    //     movieView.MovieId = movieViewDTO.MovieId;
-    //     movieView.SalonId = movieViewDTO.SalonId;
-
-    //     await _movieViewSeedData.UpdateMovieView(movieView);
-    //     return Ok();
-    // }
-
-    // [HttpDelete]
-    // public async Task<ActionResult<MovieViewDTO>> DeleteMovieViewById(MovieViewDTO movieViewDTO)
-    // {
-    //     var movieView = new MovieView()
-    //     {
-    //         MovieViewId = movieViewDTO.MovieViewId,
-    //         Date = movieViewDTO.Date,
-    //         MovieId = movieViewDTO.MovieId,
-    //         SalonId = movieViewDTO.SalonId
-    //     };
-    //     var deletedMovie = await _movieViewSeedData.DeleteMovieById(movieView);
-
-    //     var deletedMovieviewDTO = new MovieViewDTO()
-    //     {
-    //         MovieViewId = deletedMovie.MovieViewId,
-    //         Date = deletedMovie.Date,
-    //         MovieId = deletedMovie.MovieId,
-    //         SalonId = deletedMovie.SalonId
-    //     };
-    //     return Ok(deletedMovieviewDTO);
-    // }
 
 }

@@ -33,17 +33,45 @@ public class MovieViewController : ControllerBase
     //     return Ok(movieViewDTO);
     // }
 
-    [HttpPost]
-    public async Task<ActionResult<MovieViewDTO>> CreateNewMovieView(MovieViewDTO movieViewDTO)
-    {
-        var movie = await _seedData.GetMovieById(movieViewDTO.MovieId);
-        var movieViews = await _movieViewSeedData.GetMovieViewsByMovieId(movieViewDTO.MovieId);
+    // [HttpPost]
+    // public async Task<ActionResult<MovieViewDTO>> CreateNewMovieView(MovieViewDTO movieViewDTO)
+    // {
+    //     var movie = await _seedData.GetMovieById(movieViewDTO.MovieId);
+    //     var movieViews = await _movieViewSeedData.GetMovieViewsByMovieId(movieViewDTO.MovieId);
 
-        if (movieViews.Count >= movie.MaxViews)
+    //     if (movieViews.Count >= movie.MaxViews)
+    //     {
+    //         return BadRequest($"Film {movie.Title} har redan nått max antal visningar.");
+    //     }
+
+    //     var movieView = new MovieView()
+    //     {
+    //         Date = movieViewDTO.Date,
+    //         MovieId = movieViewDTO.MovieId,
+    //         SalonId = movieViewDTO.SalonId,
+    //         MovieTitle = movieViewDTO.MovieTitle
+    //     };
+
+    //     await _movieViewSeedData.CreateNewMovieView(movieView);
+    //     return Ok(movieViewDTO);
+    // }
+
+    [HttpPost]
+    public async Task<ActionResult<MovieViewDTO>> CreateNewMovieViews(MovieViewDTO movieViewDTO)
+    {
+        // Hämta alla befintliga visningar som sker i samma salong på samma tidpunkt
+        var existingMovieViews = await _movieViewSeedData.GetMovieViewsByDateAndSalonId(movieViewDTO.Date, movieViewDTO.SalonId);
+
+        // Gå igenom varje befintlig visning och kontrollera om den krockar med den nya visningen
+        foreach (var existingMovieView in existingMovieViews)
         {
-            return BadRequest($"Film {movie.Title} har redan nått max antal visningar.");
+            if (existingMovieView.Date == movieViewDTO.Date)
+            {
+                return BadRequest($"En annan film, {existingMovieView.MovieTitle}, visas i samma salong vid samma tidpunkt.");
+            }
         }
 
+        // Skapa den nya visningen om ingen kollision hittades
         var movieView = new MovieView()
         {
             Date = movieViewDTO.Date,
@@ -51,11 +79,17 @@ public class MovieViewController : ControllerBase
             SalonId = movieViewDTO.SalonId,
             MovieTitle = movieViewDTO.MovieTitle
         };
+        var addedMovieView = await _movieViewSeedData.CreateNewMovieView(movieView);
+         var addedMovieViewDTO = new MovieViewDTO()
+        {
+            Date = addedMovieView.Date,
+            MovieId = addedMovieView.MovieId,
+            SalonId = addedMovieView.SalonId,
+            MovieTitle = addedMovieView.MovieTitle
+        };
 
-        await _movieViewSeedData.CreateNewMovieView(movieView);
-        return Ok(movieViewDTO);
+        return Ok(addedMovieViewDTO);
     }
-
 
 
     [HttpGet]

@@ -16,12 +16,12 @@ public class MovieDTO
     [JsonIgnore]
     public List<MovieView> views;
 
-    public List<string> Directors { get; set; } = new();
+    public string Directors { get; set; }
 
-    public List<string> Actors { get; set; } = new();
+    public string Actors { get; set; } 
     // public Movie OneMovie { get; set; }
 
-    public MovieDTO(int movieId, string title, string description, string language, int movieLength, Movie movie, int maxViews)
+    public MovieDTO(int movieId, string title, string description, string language, int movieLength, Movie movie, int maxViews, string directors, string actors, int yearOfPublished)
     {
         MovieId = movieId;
         Title = title;
@@ -29,6 +29,9 @@ public class MovieDTO
         Language = language;
         MovieLength = movieLength;
         MaxViews = maxViews;
+        Directors = directors;
+        Actors = actors;
+        YearOfPublished = yearOfPublished;
 
         // OneMovie = oneMovie;
 

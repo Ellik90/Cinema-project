@@ -29,6 +29,9 @@ public class MovieController : ControllerBase
         {
             MovieId = m.MovieId,
             Title = m.Title,
+            Description = m.Description,
+            YearOfPublished = m.YearOfPublished,
+            MaxViews = m.MaxViews,
             MovieLength = m.MovieLength,
             Language = m.Language,
             Directors = m.Directors,
@@ -76,6 +79,8 @@ public class MovieController : ControllerBase
     {
         var movie = await _seedData.GetMovieById(movieDto.MovieId);
         movie.Title = movieDto?.Title;
+        movie.MaxViews = movieDto.MaxViews;
+        movie.YearOfPublished = movieDto.YearOfPublished;
         movie.Description = movieDto.Description;
         movie.MovieLength = movieDto.MovieLength;
         movie.Language = movieDto.Language;

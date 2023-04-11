@@ -3,6 +3,13 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Välkommen till Bio Tranan</h1>
 </div>
+@model List<BiotrananMVC.Models.Movie>
+
+    @foreach (var movie in @Model)
+{
+    <h3>@movie.Title</h3>
+}
+
+

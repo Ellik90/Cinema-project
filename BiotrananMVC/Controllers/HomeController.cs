@@ -2,30 +2,39 @@
 using Microsoft.AspNetCore.Mvc;
 using BiotrananMVC.Models;
 
-namespace BiotrananMVC.Controllers;
-
-public class HomeController : Controller
+namespace BiotrananMVC.Controllers
 {
-    private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
+    public class HomeController : Controller
     {
-        _logger = logger;
-    }
+        private readonly ILogger<HomeController> _logger;
+        private readonly MovieService _movieService;
 
-    public IActionResult Index()
-    {
-        return View();
-    }
+        public HomeController(ILogger<HomeController> logger, MovieService movieService)
+        {
+            _logger = logger;
+            _movieService = movieService;
+        }
 
-    public IActionResult Privacy()
-    {
-        return View();
-    }
+        public async Task<IActionResult> Index()
+        {
+            var movies = await _movieService.GetMoviesFromApi();
+            if (movies == null)
+            {
+                return NotFound(); // eller annan lämplig åtgärd
+            }
+            return View(movies);
+        }
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
     }
 }
+

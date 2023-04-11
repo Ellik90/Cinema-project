@@ -1,7 +1,16 @@
 var builder = WebApplication.CreateBuilder(args);
-
+// builder.Services.AddControllers().AddNewtonsoftJson(options =>
+//     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+// );
 // Add services to the container.
+
+
+
+
+
 builder.Services.AddControllersWithViews();
+builder.Services.AddSession();
+builder.Services.AddScoped<BiotrananMVC.Models.MovieService>();
 
 var app = builder.Build();
 

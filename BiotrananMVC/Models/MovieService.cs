@@ -24,18 +24,31 @@ public class MovieService
         }
     }
 
-
-    public async Task<List<Movie>> GetMoviesAsync()
+    public async Task<List<MovieView>> GetMovieViewsFromApi()
     {
-        var response = await _client.GetAsync("api/movies");
-        if (response.IsSuccessStatusCode)
+        try
         {
-            var content = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<List<Movie>>(content);
+            var movieViews = await _client.GetFromJsonAsync<List<MovieView>>("https://localhost:7146/MovieView/getUpcomingViews");
+            return movieViews;
         }
-
-        return null;
+        catch(Exception)
+        {
+            throw new Exception();
+        }
     }
+
+
+    // public async Task<List<Movie>> GetMoviesAsync()
+    // {
+    //     var response = await _client.GetAsync("api/movies");
+    //     if (response.IsSuccessStatusCode)
+    //     {
+    //         var content = await response.Content.ReadAsStringAsync();
+    //         return JsonConvert.DeserializeObject<List<Movie>>(content);
+    //     }
+
+    //     return null;
+    // }
 
 
 

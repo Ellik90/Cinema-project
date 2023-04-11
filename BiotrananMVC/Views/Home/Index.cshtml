@@ -5,11 +5,21 @@
 <div class="text-center">
     <h1 class="display-4">Välkommen till Bio Tranan</h1>
 </div>
+
+<a href="@Url.Action("UpcomingViews", "Home")">Visa kommande filmvisningar</a>
+
+
+
 @model List<BiotrananMVC.Models.Movie>
 
-    @foreach (var movie in @Model)
+@foreach (var movie in @Model)
 {
-    <h3>@movie.Title</h3>
+    <div class="movie-title">
+        <h3>@movie.Title</h3>
+    </div>
 }
+
+
+
 
 

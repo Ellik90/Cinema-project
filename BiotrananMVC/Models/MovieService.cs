@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
@@ -24,6 +25,20 @@ public class MovieService
         }
     }
 
+//    public async Task<List<Movie>> GetMovieByIdFromApi(int id)
+// {
+//     try
+//     {
+//         var movie = await _client.GetFromJsonAsync<List<Movie>>($"https://localhost:7146/Movie/{id}");
+//         return movie;
+//     }
+//     catch (Exception)
+//     {
+//         throw new Exception();
+//     }
+// }
+
+
     public async Task<List<MovieView>> GetMovieViewsFromApi()
     {
         try
@@ -31,24 +46,11 @@ public class MovieService
             var movieViews = await _client.GetFromJsonAsync<List<MovieView>>("https://localhost:7146/MovieView/getUpcomingViews");
             return movieViews;
         }
-        catch(Exception)
+        catch (Exception)
         {
             throw new Exception();
         }
     }
-
-
-    // public async Task<List<Movie>> GetMoviesAsync()
-    // {
-    //     var response = await _client.GetAsync("api/movies");
-    //     if (response.IsSuccessStatusCode)
-    //     {
-    //         var content = await response.Content.ReadAsStringAsync();
-    //         return JsonConvert.DeserializeObject<List<Movie>>(content);
-    //     }
-
-    //     return null;
-    // }
 
 
 

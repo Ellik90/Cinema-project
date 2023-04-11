@@ -19,18 +19,29 @@ body {
 
 a {
   text-decoration: none;
-  font-size: 25px;
+  font-size: 30px;
 }
 
+hr {
+  border-top: 2px solid #534848;
+  margin: 20px 0;
+}
+
+
+.movieView {
+  margin-bottom: 20px;
+}
+
+
 #movieView-3 {
-  background-color: yellow;
+  
   font-weight: bold;
   padding: 10px;
   margin-bottom: 10px;
 }
 
 #movieView-4 {
-  background-color: lightcoral;
+ 
   font-weight: bold;
   padding: 10px;
   margin-bottom: 10px;

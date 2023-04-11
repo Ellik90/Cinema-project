@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using BiotrananMVC.Models;
 
@@ -15,6 +17,28 @@ namespace BiotrananMVC.Controllers
             _movieService = movieService;
         }
 
+        public async Task<IActionResult> MovieDetails(int id)
+        {
+            var movies = await _movieService.GetMoviesFromApi();
+            Movie movie = null;
+            foreach (var m in movies)
+            {
+                if (m.MovieId == id)
+                {
+                    movie = m;
+                    break;
+                }
+            }
+            if (movie == null)
+            {
+                return NotFound();
+            }
+            return View(movie);
+        }
+
+
+
+
         public async Task<IActionResult> UpcomingViews()
         {
             var movieViews = await _movieService.GetMovieViewsFromApi();
@@ -30,7 +54,7 @@ namespace BiotrananMVC.Controllers
             var movies = await _movieService.GetMoviesFromApi();
             if (movies == null)
             {
-                return NotFound(); 
+                return NotFound();
             }
             return View(movies);
         }

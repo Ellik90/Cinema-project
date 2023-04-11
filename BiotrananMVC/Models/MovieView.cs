@@ -16,6 +16,7 @@ public class MovieView
         MovieTitle = movieTitle;
         MovieId = movieId;
         SalonId = salonId;
+       
         // Movie = movie;
         // Salon = salon;
     }

@@ -47,13 +47,13 @@ namespace BiotrananMVC.Controllers
         //     }
         // }
 
-        public async Task<IActionResult> MovieDetails(int id)
+        public async Task<IActionResult> MovieDetails(int movieId)
         {
             var movies = await _movieService.GetMoviesFromApi();
             Movie movie = null;
             foreach (var m in movies)
             {
-                if (m.MovieId == id)
+                if (m.MovieId == movieId)
                 {
                     movie = m;
                     break;

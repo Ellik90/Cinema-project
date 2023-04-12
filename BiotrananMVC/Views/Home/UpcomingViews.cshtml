@@ -6,8 +6,8 @@
 
 @foreach (var movieView in Model)
 {
-    <div id="movieView-@movieView.MovieViewId" class="movieView">
-        <h3><a asp-controller="Home" asp-action="MovieDetails" asp-route-movieViewId="@movieView.MovieId">@movieView.MovieTitle</a></h3>
+    <div class="movieView">
+        <h3><a asp-controller="Home" asp-action="MovieDetails" asp-route-movieId="@movieView.MovieId">@movieView.MovieTitle</a></h3>
        
         <h4>Visas i salong: @movieView.SalonId</h4>
         <h4>Datum och tid för visning: @movieView.Date</h4>

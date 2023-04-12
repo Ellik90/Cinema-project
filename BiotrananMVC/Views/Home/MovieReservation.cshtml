@@ -1,0 +1,31 @@
+@model BiotrananMVC.Models.Reservation
+
+<div class="text-center">
+    <h1 class="display-4">Reservera biljetter</h1>
+</div>
+
+<form method="post" asp-controller="Home" asp-action="BookedReservations">
+    <div class="form-group">
+        <label>Namn:</label>
+        <input type="text" class="form-control" asp-for="CustomerName" />
+    </div>
+    <div class="form-group">
+        <label>Telefonnummer:</label>
+        <input type="text" class="form-control" asp-for="PhoneNumber" />
+    </div>
+    <div class="form-group">
+        <label>Välj hur många platser:</label>
+        <input type="number" class="form-control" asp-for="NumberOfSeats" />
+    </div>
+    <div class="form-group">
+        <label>Datum:</label>
+        <input type="date" class="form-control" asp-for="DateForReservation" />
+    </div>
+
+    <input type="hidden" asp-for="MovieViewId" />
+
+    <button type="submit" class="btn btn-primary">Reservera</button>
+</form>
+
+
+

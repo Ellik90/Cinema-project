@@ -17,6 +17,36 @@ namespace BiotrananMVC.Controllers
             _movieService = movieService;
         }
 
+        public async Task<IActionResult> MovieReservation(int movieViewId)
+        {
+            Console.WriteLine("movie reservation anropas och movieviewid = " + movieViewId);
+            var reservation = new Reservation();
+            reservation.MovieViewId = movieViewId;
+            return View(reservation);
+        }
+
+        public async Task<IActionResult> BookedReservations(Reservation reservation)
+        {
+            await _movieService.NewReservationToApi(reservation);
+            return View();
+        }
+
+
+        // public async Task<IActionResult> CreateNewReservation(Reservation reservation)
+        // {
+        //     bool     = await _movieService.CheckAvailableSeats(reservation.MovieId, reservation.SeatCount);
+
+        //     if (enoughSeatsAvailable)
+        //     {
+        //         await _movieService.AddReservation(reservation);
+        //         return RedirectToAction("Index");
+        //     }
+        //     else
+        //     {
+        //         return BadRequest("Not enough available seats");
+        //     }
+        // }
+
         public async Task<IActionResult> MovieDetails(int id)
         {
             var movies = await _movieService.GetMoviesFromApi();
@@ -35,9 +65,6 @@ namespace BiotrananMVC.Controllers
             }
             return View(movie);
         }
-
-
-
 
         public async Task<IActionResult> UpcomingViews()
         {

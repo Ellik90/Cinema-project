@@ -1,22 +1,18 @@
 @model List<BiotrananMVC.Models.MovieView>
     
-@* @{
-ViewData["Title"] = "Kommande filmvisningar";
-}
-<h1>@ViewData["Title"]</h1> *@
-
 <div class="text-center">
     <h1 class="display-4">Kommande Film visningar</h1>
 </div>
 
-@foreach (var movieView in @Model)
+@foreach (var movieView in Model)
 {
     <div id="movieView-@movieView.MovieViewId" class="movieView">
-        <h3><a asp-controller="Home" asp-action="MovieDetails" asp-route-id="@movieView.MovieId">@movieView.MovieTitle</a></h3>
-               
+        <h3><a asp-controller="Home" asp-action="MovieDetails" asp-route-movieViewId="@movieView.MovieId">@movieView.MovieTitle</a></h3>
+       
         <h4>Visas i salong: @movieView.SalonId</h4>
         <h4>Datum och tid för visning: @movieView.Date</h4>
-        <p>Klicka på film titel för mer information eller gå direkt till biljettbokning => @movieView</p>
+        <h4>Biljetter kvar: @movieView.AvailableSeats</h4>
+        <p>Klicka på film titel för mer information eller gå direkt till biljettbokning =></p> <a asp-controller="Home" asp-action="MovieReservation" asp-route-movieViewId="@movieView.MovieViewId"><h3>Reservera</h3></a>
     </div>
     <hr>
 }

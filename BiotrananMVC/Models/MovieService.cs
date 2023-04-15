@@ -29,6 +29,21 @@ public class MovieService
         }
     }
 
+    // public async Task<List<Movie>> GetReservations()
+    // {
+    //     try
+    //     {
+    //         var response = await _client.GetFromJsonAsync<List<Movie>>("https://localhost:7146/Reservation");
+    //         return response;
+    //     }
+    //     catch (Exception)
+    //     {
+    //         throw new Exception();
+    //     }
+    // }
+
+
+
 
     public async Task<List<Movie>> GetMoviesFromApi()
     {

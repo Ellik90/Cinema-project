@@ -12,12 +12,14 @@ public class MovieView
     public ICollection<Reservation> Reservations;
      public int AvailableSeats {get;set;}
 
-    public MovieView(string movieTitle, int movieId, int salonId, int availableSeats)
+    public MovieView(string movieTitle, int movieId, int salonId, int availableSeats, Movie movie)
     {
         MovieTitle = movieTitle;
         MovieId = movieId;
         SalonId = salonId;
+        Movie = movie;
         AvailableSeats = availableSeats;
+        
         // Movie = movie;
         // Salon = salon;
     }

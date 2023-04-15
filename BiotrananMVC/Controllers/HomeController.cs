@@ -4,6 +4,7 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using BiotrananMVC.Models;
 
+
 namespace BiotrananMVC.Controllers
 {
     public class HomeController : Controller
@@ -19,17 +20,38 @@ namespace BiotrananMVC.Controllers
 
         public async Task<IActionResult> MovieReservation(int movieViewId)
         {
+            var movieViews = await _movieService.GetMovieViewsFromApi();
+            var movieView = movieViews.Find(m => m.MovieViewId == movieViewId);
+            var movie = movieView.Movie ?? new Movie();
             Console.WriteLine("movie reservation anropas och movieviewid = " + movieViewId);
             var reservation = new Reservation();
+            reservation.MovieView = movieView;
             reservation.MovieViewId = movieViewId;
             return View(reservation);
         }
 
+
+
+        // public async Task<IActionResult> BookedReservations(Reservation reservation)
+        // {
+        //     _movieService.NewReservationToApi(reservation);
+        //     return View(reservation);
+        // }
+
         public async Task<IActionResult> BookedReservations(Reservation reservation)
         {
-            await _movieService.NewReservationToApi(reservation);
-            return View();
+            var newReservation = await _movieService.NewReservationToApi(reservation);
+
+            var movieViews = await _movieService.GetMovieViewsFromApi(); //ändra till by id
+            var movieView = movieViews.Find(m => m.MovieViewId == newReservation.MovieViewId);
+        
+            var bookedReservationViewModel = new BookedReservationViewModel(newReservation.ReservationId,
+            newReservation.CustomerName, newReservation.PhoneNumber, newReservation.NumberOfSeats, movieView.Date,
+            movieView.MovieTitle 
+            );
+            return View("BookedReservations", bookedReservationViewModel);
         }
+
 
 
         // public async Task<IActionResult> CreateNewReservation(Reservation reservation)

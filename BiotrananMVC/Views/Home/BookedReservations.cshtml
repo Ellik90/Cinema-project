@@ -1,5 +1,22 @@
-@model BiotrananMVC.Models.Movie
+@model BiotrananMVC.Models.BookedReservationViewModel
 
 <div class="text-center">
-    <h1 class="display-4">Dina reservationer</h1>
+    <h1 class="display-4">Tack för din reservation</h1>
 </div>
+<div class="text-center">
+    <h4>Reservationsinformation</h4>
+    <ul class="list-group">
+        <li class="list-group-item"><strong>Film:</strong> @Model.MovieTitle</li>
+        <li class="list-group-item"><strong>Dag:</strong> @Model.DateForMovieView.ToShortDateString()</li>
+        <li class="list-group-item"><strong>Tid:</strong> @Model.DateForMovieView.ToShortTimeString()</li>
+        <li class="list-group-item"><strong>Namn:</strong> @Model.CustomerName</li>
+        <li class="list-group-item"><strong>Telefonnummer:</strong> @Model.PhoneNumber</li>
+        <li class="list-group-item"><strong>Antal platser:</strong> @Model.NumberOfSeats</li>
+    </ul>
+</div>
+
+<h3>
+    <a asp-controller="Home" asp-action="UpcomingViews">Tillbaka</a>
+</h3>
+
+

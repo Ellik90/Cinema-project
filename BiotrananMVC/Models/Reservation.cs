@@ -8,6 +8,7 @@ public class Reservation
     public int NumberOfSeats { get; set; }
     public DateTime DateForReservation { get; set; }
     public MovieView MovieView{get;set;}
+    public Movie Movie;
 
     public Reservation( string customerName, string phoneNumber, int movieViewId, int numberOfSeats, DateTime dateForReservation)
     {

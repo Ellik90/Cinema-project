@@ -4,7 +4,7 @@ public class MovieViewDTO
 {
     public int MovieViewId { get; set; }
     public string MovieTitle { get; set; }
-    public DateTime Date { get; set; }
+     public DateTime Date { get; set; }
     public int MovieId { get; set; }
     public int SalonId { get; set; }
     public string SalonName { get; set; }
@@ -21,6 +21,7 @@ public class MovieViewDTO
         SalonId = salonId;
         SalonName = salonName;
         Date = date;
+        
     
     }
 

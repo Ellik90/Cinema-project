@@ -10,6 +10,7 @@ public class Movie
     public string Language { get; set; }
     public int MovieLength { get; set; }
     public int YearOfPublished { get; set; }
+    // public string ImageLink { get; set; }
 
     public List<MovieView> movieViews { get; set; }
     public string Directors { get; set; }

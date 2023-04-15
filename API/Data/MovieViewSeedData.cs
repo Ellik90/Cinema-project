@@ -50,7 +50,7 @@ public class MovieViewSeedData
                 var reservedSeats = r.NumberOfSeats;
                 availableSeats -= reservedSeats;
             }
-            view.availableSeats = availableSeats;
+            view.AvailableSeats = availableSeats;
         }
 
         return movieViews;

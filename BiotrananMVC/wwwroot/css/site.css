@@ -47,3 +47,9 @@ hr {
   margin-bottom: 10px;
 }
 
+.reservation-button p,
+.reservation-button a {
+    display: inline-block;
+}
+
+

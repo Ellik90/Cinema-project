@@ -1,40 +1,44 @@
-@model List<BiotrananMVC.Models.MovieView>
-    
-<div class="text-center">
-    <h1 class="display-4">Kommande Film visningar</h1>
-</div>
-
 @foreach (var movieView in Model)
 {
     <div class="movieView">
-        <h3><a asp-controller="Home" asp-action="MovieDetails" asp-route-movieId="@movieView.MovieId">@movieView.MovieTitle</a></h3>
-       
+        <h3><a asp-controller="Home" asp-action="MovieDetails"
+            asp-route-movieId="@movieView.MovieId">@movieView.MovieTitle</a></h3>
+
         <h4>Visas i salong: @movieView.SalonId</h4>
-        <h4>Datum och tid för visning: @movieView.Date</h4>
+        <h4>Datum för visning: @movieView.Date.ToShortDateString()</h4>
+        <h4>Tid för visning: @movieView.Date.ToShortTimeString()</h4>
         <h4>Biljetter kvar: @movieView.AvailableSeats</h4>
-        <p>Klicka på film titel för mer information eller gå direkt till biljettbokning =></p> <a asp-controller="Home" asp-action="MovieReservation" asp-route-movieViewId="@movieView.MovieViewId"><h3>Reservera</h3></a>
+        <div class="reservation-button">
+            <p>Klicka på film titel för mer information eller gå direkt till biljettbokning =></p>
+            <a asp-controller="Home" asp-action="MovieReservation" asp-route-movieViewId="@movieView.MovieViewId">
+                <h3>Reservera</h3>
+            </a>
+        </div>
     </div>
     <hr>
 }
 
 
+
 @* @model List<BiotrananMVC.Models.MovieView>
-    
+
 <div class="text-center">
-    <h1 class="display-4">Kommande Film visningar</h1>
+<h1 class="display-4">Kommande Film visningar</h1>
 </div>
 
 @foreach (var movieView in Model)
 {
-    <div class="movieView">
-        <h3><a asp-controller="Home" asp-action="MovieDetails" asp-route-movieId="@movieView.MovieId">@movieView.MovieTitle</a></h3>
-       
-        <h4>Visas i salong: @movieView.SalonId</h4>
-        <h4>Datum och tid för visning: @movieView.Date</h4>
-        <h4>Biljetter kvar: @movieView.AvailableSeats</h4>
-        <p>Klicka på film titel för mer information eller gå direkt till biljettbokning =></p> <a asp-controller="Home" asp-action="MovieReservation" asp-route-movieViewId="@movieView.MovieViewId"><h3>Reservera</h3></a>
-    </div>
-    <hr>
+<div class="movieView">
+<h3><a asp-controller="Home" asp-action="MovieDetails"
+asp-route-movieId="@movieView.MovieId">@movieView.MovieTitle</a></h3>
+
+<h4>Visas i salong: @movieView.SalonId</h4>
+<h4>Datum och tid för visning: @movieView.Date</h4>
+<h4>Biljetter kvar: @movieView.AvailableSeats</h4>
+<p>Klicka på film titel för mer information eller gå direkt till biljettbokning =></p> <a asp-controller="Home"
+asp-action="MovieReservation" asp-route-movieViewId="@movieView.MovieViewId"><h3>Reservera</h3></a>
+</div>
+<hr>
 } *@
 
 

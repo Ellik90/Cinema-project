@@ -77,6 +77,7 @@ public class MovieViewController : ControllerBase
             MovieId = movieViewDTO.MovieId,
             SalonId = movieViewDTO.SalonId,
             MovieTitle = movieViewDTO.MovieTitle
+            
         };
 
         var addedMovieView = await _movieViewSeedData.CreateNewMovieView(movieView);
@@ -86,6 +87,7 @@ public class MovieViewController : ControllerBase
             MovieId = addedMovieView.MovieId,
             SalonId = addedMovieView.SalonId,
             MovieTitle = addedMovieView.MovieTitle
+            
         };
 
         return Ok(addedMovieViewDTO);
@@ -109,7 +111,7 @@ public class MovieViewController : ControllerBase
             SalonId = v.SalonId,
             SalonName = v.Salon?.SalonName,
             Date = v.Date,
-            AvailableSeats = v.availableSeats
+            AvailableSeats = v.AvailableSeats
         }).ToList();
         return Ok(movieViewDTO);
     }
@@ -127,7 +129,8 @@ public class MovieViewController : ControllerBase
             MovieId = v.MovieId,
             SalonId = v.SalonId,
             SalonName = v.Salon?.SalonName,
-            Date = v.Date
+            Date = v.Date,
+            AvailableSeats = v.AvailableSeats
         }).ToList();
 
         return Ok(movieViewDTOs);

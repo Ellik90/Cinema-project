@@ -66,8 +66,6 @@ namespace BiotrananMVC.Controllers
             return View(movie);
         }
 
-        
-
         public async Task<IActionResult> UpcomingViews()
         {
             var movieViews = await _movieService.GetMovieViewsFromApi();

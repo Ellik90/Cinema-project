@@ -9,14 +9,16 @@ public class MovieView
     public int SalonId { get; set; }
     public Movie Movie { get; set; }
     public Salon Salon { get; set; }
+    public int AvailableSeats { get; set; }
     public ICollection<Reservation> Reservations;
-    public int availableSeats{get;set;}
+   
 
-    public MovieView(string movieTitle, int movieId, int salonId)
+    public MovieView(string movieTitle, int movieId, int salonId, int availableSeats)
     {
         MovieTitle = movieTitle;
         MovieId = movieId;
         SalonId = salonId;
+        AvailableSeats = availableSeats;
         // Movie = movie;
         // Salon = salon;
     }

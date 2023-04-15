@@ -108,7 +108,8 @@ public class MovieViewController : ControllerBase
             MovieId = v.MovieId,
             SalonId = v.SalonId,
             SalonName = v.Salon?.SalonName,
-            Date = v.Date
+            Date = v.Date,
+            AvailableSeats = v.availableSeats
         }).ToList();
         return Ok(movieViewDTO);
     }

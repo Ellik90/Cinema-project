@@ -55,7 +55,7 @@ namespace BiotrananMVC.Controllers
             {
                 if (m.MovieId == movieId)
                 {
-                    movie = m;
+                    movie = new(m.Title, m.Description, m.Language, m.MovieLength, m.MaxViews, m.Directors, m.Actors);
                     break;
                 }
             }
@@ -65,6 +65,8 @@ namespace BiotrananMVC.Controllers
             }
             return View(movie);
         }
+
+        
 
         public async Task<IActionResult> UpcomingViews()
         {

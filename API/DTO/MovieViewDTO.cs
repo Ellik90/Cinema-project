@@ -8,6 +8,7 @@ public class MovieViewDTO
     public int MovieId { get; set; }
     public int SalonId { get; set; }
     public string SalonName { get; set; }
+    public int AvailableSeats {get;set;}
 
     public Movie Movie;
     public Salon Salon;

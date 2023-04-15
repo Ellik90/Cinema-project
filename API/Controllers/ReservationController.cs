@@ -51,7 +51,7 @@ public class ReservationController : ControllerBase
             };
 
             await _reservationSeedData.CreateNewReservations(reservation);
-
+            
             return Ok(reservationDTO);
         }
         else

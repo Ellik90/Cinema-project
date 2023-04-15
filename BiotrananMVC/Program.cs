@@ -6,8 +6,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 
-
-
 builder.Services.AddControllersWithViews();
 builder.Services.AddSession();
 builder.Services.AddScoped<BiotrananMVC.Models.MovieService>();

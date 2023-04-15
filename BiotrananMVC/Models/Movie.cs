@@ -15,8 +15,8 @@ public class Movie
     public int MaxViews { get; set; }
 
     public string Language { get; set; }
-
-    public int MovieLength { get; set; }
+    public int MovieLength{get;set;}
+    public string MovieLengthString { get; set; }
 
     public int YearOfPublished { get; set; }
 
@@ -34,9 +34,16 @@ public class Movie
         MaxViews = maxViews;
         Directors = directors;
         Actors = actors;
+        MovieLengthString = ConvertToHoursAndMinutes(movieLength);
 
         // OneMovie = oneMovie;
 
     }
     public Movie() { }
+      public static string ConvertToHoursAndMinutes(int movielength)
+    {
+        var hours = movielength / 60;
+        var minutes = movielength % 60;
+        return $"{hours}h {minutes}min";
+    }
 }

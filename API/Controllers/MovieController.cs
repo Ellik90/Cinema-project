@@ -43,7 +43,9 @@ public class MovieController : ControllerBase
     [HttpGet("movieId")]
     public async Task<ActionResult<MovieDTO>> GetMovieById(int movieId) // ÄNDRADE DENNA, KOLLA SÅ DET STÄMMER
     {
+
         var oneMovie = await _seedData.GetMovieById(movieId);
+
         var movieDto = new MovieDTO
         {
             Title = oneMovie.Title,

@@ -62,6 +62,21 @@ public class ReservationSeedData
     {
         _myDbContext.reservations.Add(reservations);
         await _myDbContext.SaveChangesAsync();
+        await UpdateSeats(reservations);
         return reservations;
     }
+
+    private async Task UpdateSeats(Reservation reservation)
+    {
+        var reservedSeats = reservation.NumberOfSeats;
+
+        var availableSeats = await _myDbContext.reservations
+        .Where( r => r.MovieViewId == reservation.MovieViewId)
+        .SumAsync(r => r.NumberOfSeats);
+
+        availableSeats = availableSeats - reservedSeats;
+
+        await _myDbContext.SaveChangesAsync();
+    }
+
 }

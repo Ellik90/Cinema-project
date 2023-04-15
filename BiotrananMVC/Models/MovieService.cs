@@ -12,12 +12,13 @@ public class MovieService
 
     public readonly HttpClient _client = new HttpClient();
 
+
     public async Task<Reservation> NewReservationToApi(Reservation reservations)
     {
         try
         {
             var response = await _client.PostAsJsonAsync("https://localhost:7146/Reservation", reservations);
-            response.EnsureSuccessStatusCode();
+            // response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
             var reservation = JsonConvert.DeserializeObject<Reservation>(content);
             return reservation;

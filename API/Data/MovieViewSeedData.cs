@@ -24,9 +24,35 @@ public class MovieViewSeedData
 
     public async Task<List<MovieView>> GetMovieViews()
     {
+        var reservation = await _myDbContext.reservations.FindAsync(1);
+        if (_myDbContext.reservations.Contains(reservation))
+        {
+            _myDbContext.reservations.Remove(reservation);
+        }
+
+        // var reservation = await _myDbContext.reservations.FindAsync(1);
+        // _myDbContext.reservations.Remove(reservation);
+
         List<MovieView> movieViews = new();
 
         movieViews = await _myDbContext.movieViews.ToListAsync();
+        foreach (var view in movieViews)
+        {
+            var salon = await _myDbContext.salons
+        .Where(s => s.SalonId == view.SalonId).FirstOrDefaultAsync();
+
+            var availableSeats = salon.NumberOfSeats;
+
+            var reservations = await _myDbContext.reservations.Where(r => r.MovieViewId == view.MovieViewId).ToListAsync();
+
+            foreach (var r in reservations)
+            {
+                var reservedSeats = r.NumberOfSeats;
+                availableSeats -= reservedSeats;
+            }
+            view.availableSeats = availableSeats;
+        }
+
         return movieViews;
 
     }

@@ -1,5 +1,4 @@
 namespace API.Models;
-
 public class MovieView
 {
     public int MovieViewId { get; set; }
@@ -12,23 +11,12 @@ public class MovieView
     public int AvailableSeats { get; set; }
     public ICollection<Reservation> Reservations;
    
-
     public MovieView(string movieTitle, int movieId, int salonId, int availableSeats)
     {
         MovieTitle = movieTitle;
         MovieId = movieId;
         SalonId = salonId;
         AvailableSeats = availableSeats;
-        // Movie = movie;
-        // Salon = salon;
     }
-
-    // public MovieView( string movieTitle, int movieId, int salonId, Movie movie)
-    // {
-    //     MovieTitle = Movie.Title;
-    //     MovieId = movieId;
-    //     SalonId = Salon.SalonId; 
-    //     Movie = movie;   
-    // }
     public MovieView() { }
 }

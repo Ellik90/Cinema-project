@@ -17,7 +17,7 @@ public class Reservation
         MovieViewId = movieViewId;
         NumberOfSeats = numberOfSeats;
         ReservationPrice = reservationPrice;
-        DateForReservation = dateForReservation; // ska denna innehålla reservationsId?
+        DateForReservation = dateForReservation;
     }
     public Reservation(){}
 }

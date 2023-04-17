@@ -11,6 +11,5 @@ public class Seat
         SalonId = salonId;
         Salon = salon;
     }
-
     public Seat(){}
 }

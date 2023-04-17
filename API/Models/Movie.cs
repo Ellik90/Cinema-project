@@ -10,12 +10,9 @@ public class Movie
     public string Language { get; set; }
     public int MovieLength { get; set; }
     public int YearOfPublished { get; set; }
-    // public string ImageLink { get; set; }
-
     public List<MovieView> movieViews { get; set; }
     public string Directors { get; set; }
     public string Actors { get; set; }
-    // public Movie OneMovie { get; set; }
 
     public Movie(string title, string description, string language, decimal moviePrice, int movieLenght, int maxViews, string directors, string actors)
     {
@@ -27,9 +24,6 @@ public class Movie
         MaxViews = maxViews;
         Directors = directors;
         Actors = actors;
-
-        // OneMovie = oneMovie;
-
     }
     public Movie() { }
 }

@@ -6,8 +6,7 @@ public class Salon
     public int NumberOfSeats { get; set; }
     public int NumberOfRows { get; set; }
     public decimal SalonPrice { get; set; }
-    public ICollection<Seat> Seats { get; set; }
-   
+    public ICollection<Seat> Seats { get; set; }  
     public ICollection<MovieView> Views;
 
     public Salon(string salonName, int numberOfSeats, int numberOfRows, decimal salonPrice, ICollection<Seat> seats)

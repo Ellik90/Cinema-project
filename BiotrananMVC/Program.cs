@@ -5,10 +5,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 
-
 builder.Services.AddControllersWithViews();
 builder.Services.AddSession();
-builder.Services.AddScoped<BiotrananMVC.Models.MovieService>();
+builder.Services.AddScoped<BiotrananMVC.Models.IMovieService, BiotrananMVC.Models.MovieService>();
+
 
 var app = builder.Build();
 

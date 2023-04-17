@@ -1,7 +1,7 @@
 using Newtonsoft.Json;
 
 namespace BiotrananMVC.Models;
-public class MovieService
+public class MovieService : IMovieService
 {
     public readonly HttpClient _client = new HttpClient();
 

@@ -7,22 +7,22 @@ namespace BiotrananMVC.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly MovieService _movieService;
+        private readonly IMovieService _iMovieService;
 
-        public HomeController(ILogger<HomeController> logger, MovieService movieService)
+        public HomeController(ILogger<HomeController> logger, IMovieService iMovieService)
         {
             _logger = logger;
-            _movieService = movieService;
+            _iMovieService = iMovieService;
         }
 
         public async Task<IActionResult> MovieReservation(int movieViewId)
         {
             try
             {
-                var movieViews = await _movieService.GetMovieViewsFromApi();
+                var movieViews = await _iMovieService.GetMovieViewsFromApi();
                 var movieView = movieViews.Find(m => m.MovieViewId == movieViewId);
 
-                var movies = await _movieService.GetMoviesFromApi(); //by id direkt istället
+                var movies = await _iMovieService.GetMoviesFromApi(); //by id direkt istället
                 var movie = movies.Find(m => m.MovieId == movieView.MovieId);
 
                 var reservation = new Reservation();
@@ -53,9 +53,9 @@ namespace BiotrananMVC.Controllers
         {
             try
             {
-                var newReservation = await _movieService.NewReservationToApi(reservation);
+                var newReservation = await _iMovieService.NewReservationToApi(reservation);
 
-                var movieViews = await _movieService.GetMovieViewsFromApi();
+                var movieViews = await _iMovieService.GetMovieViewsFromApi();
                 var movieView = movieViews.Find(m => m.MovieViewId == newReservation.MovieViewId);
 
                 var bookedReservationViewModel = new BookedReservationViewModel(
@@ -78,7 +78,7 @@ namespace BiotrananMVC.Controllers
         {
             try
             {
-                var movies = await _movieService.GetMoviesFromApi();
+                var movies = await _iMovieService.GetMoviesFromApi();
                 Movie movie = null;
                 foreach (var m in movies)
                 {
@@ -100,19 +100,19 @@ namespace BiotrananMVC.Controllers
             }
         }
 
-        // public async Task<IActionResult> UpcomingViews()
-        // {
-        //     var movieViews = await _movieService.GetMovieViewsFromApi();
-        //     if (movieViews == null)
-        //     {
-        //         return NotFound();
-        //     }
-        //     return View(movieViews);
-        // }
+        public async Task<IActionResult> UpcomingViews()
+        {
+            var movieViews = await _iMovieService.GetMovieViewsFromApi();
+            if (movieViews == null)
+            {
+                return NotFound();
+            }
+            return View(movieViews);
+        }
 
         public async Task<IActionResult> Index()
         {
-            var movies = await _movieService.GetMoviesFromApi();
+            var movies = await _iMovieService.GetMoviesFromApi();
             if (movies == null)
             {
                 return NotFound();

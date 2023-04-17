@@ -31,7 +31,8 @@ public class SalonController : ControllerBase
             SalonId = s.SalonId,
             SalonName = s.SalonName,
             NumberOfRows = s.NumberOfRows,
-            NumberOfSeats = s.NumberOfSeats
+            NumberOfSeats = s.NumberOfSeats,
+            SalonPrice = s.SalonPrice
         }).ToList();
         return Ok(salonDTOs);
     }
@@ -45,7 +46,8 @@ public class SalonController : ControllerBase
             SalonId = salonDTO.SalonId,         
             SalonName = salonDTO.SalonName,
             NumberOfRows = salonDTO.NumberOfRows,
-            NumberOfSeats = salonDTO.NumberOfSeats
+            NumberOfSeats = salonDTO.NumberOfSeats,
+            SalonPrice = salonDTO.SalonPrice
         };
         return Ok(salonDTO);
     }
@@ -58,7 +60,8 @@ public class SalonController : ControllerBase
             SalonId = salonDTO.SalonId,
             SalonName = salonDTO.SalonName,
             NumberOfRows = salonDTO.NumberOfRows,
-            NumberOfSeats = salonDTO.NumberOfSeats
+            NumberOfSeats = salonDTO.NumberOfSeats,
+            SalonPrice = salonDTO.SalonPrice
         };
         await _salonSeedData.CreateNewSalons(salon);
         return Ok(salonDTO);
@@ -73,6 +76,7 @@ public class SalonController : ControllerBase
         salon.SalonName = salonDTO.SalonName;
         salon.NumberOfRows = salonDTO.NumberOfRows;
         salon.NumberOfSeats = salonDTO.NumberOfSeats;
+        salon.SalonPrice = salonDTO.SalonPrice;
 
         await _salonSeedData.UpdateSalon(salon);
         return Ok(salonDTO);

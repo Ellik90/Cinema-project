@@ -21,8 +21,6 @@ public class MovieViewDTO
         SalonId = salonId;
         SalonName = salonName;
         Date = date;
-        
-    
     }
 
 

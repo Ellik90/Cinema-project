@@ -6,12 +6,13 @@ public class MovieDTO
     public int MovieId { get; set; }
     public string Title { get; set; }
     public string Description { get; set; }
-    public decimal Price { get; set; }
+    public decimal MoviePrice { get; set; }
     public int MovieViewsShown { get; set; }
     public int MaxViews { get; set; }
     public string Language { get; set; }
     public int MovieLength { get; set; }
     public int YearOfPublished { get; set; }
+
 
     [JsonIgnore]
     public List<MovieView> views;
@@ -21,12 +22,12 @@ public class MovieDTO
     public string Actors { get; set; }
     // public Movie OneMovie { get; set; }
 
-    public MovieDTO(int movieId, string title, string description, decimal price, string language, int movieLength, Movie movie, int maxViews, string directors, string actors, int yearOfPublished)
+    public MovieDTO(int movieId, string title, string description, decimal moviePrice, string language, int movieLength, Movie movie, int maxViews, string directors, string actors, int yearOfPublished)
     {
         MovieId = movieId;
         Title = title;
         Description = description;
-        Price = price;
+        MoviePrice = moviePrice;
         Language = language;
         MovieLength = movieLength;
         MaxViews = maxViews;

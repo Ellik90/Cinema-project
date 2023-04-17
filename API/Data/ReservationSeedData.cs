@@ -71,12 +71,27 @@ public class ReservationSeedData
         var reservedSeats = reservation.NumberOfSeats;
 
         var availableSeats = await _myDbContext.reservations
-        .Where( r => r.MovieViewId == reservation.MovieViewId)
+        .Where(r => r.MovieViewId == reservation.MovieViewId)
         .SumAsync(r => r.NumberOfSeats);
 
         availableSeats = availableSeats - reservedSeats;
 
         await _myDbContext.SaveChangesAsync();
+    }
+
+    public async Task<Reservation> DeleteReservation(Reservation reservation)
+    {
+        var existingReservation = await _myDbContext.reservations.FindAsync(reservation.ReservationId);
+        if (existingReservation == null)
+        {
+            return null;
+        }
+        else
+        {
+            _myDbContext.reservations.Remove(existingReservation);
+            await _myDbContext.SaveChangesAsync();
+            return existingReservation;
+        }
     }
 
 }

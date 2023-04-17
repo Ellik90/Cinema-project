@@ -10,7 +10,6 @@ namespace API.Controllers;
 [Route("[controller]")]
 public class MovieController : ControllerBase
 {
-
     SeedData _seedData;
     public MovieController(SeedData seedData)
     {
@@ -33,6 +32,7 @@ public class MovieController : ControllerBase
             YearOfPublished = m.YearOfPublished,
             MaxViews = m.MaxViews,
             MovieLength = m.MovieLength,
+            MoviePrice = m.MoviePrice,
             Language = m.Language,
             Directors = m.Directors,
             Actors = m.Actors
@@ -43,7 +43,6 @@ public class MovieController : ControllerBase
     [HttpGet("movieId")]
     public async Task<ActionResult<MovieDTO>> GetMovieById(int movieId) // ÄNDRADE DENNA, KOLLA SÅ DET STÄMMER
     {
-
         var oneMovie = await _seedData.GetMovieById(movieId);
 
         var movieDto = new MovieDTO
@@ -51,6 +50,7 @@ public class MovieController : ControllerBase
             Title = oneMovie.Title,
             MovieLength = oneMovie.MovieLength,
             Language = oneMovie.Language,
+            MoviePrice = oneMovie.MoviePrice,
             Directors = oneMovie.Directors,
             Actors = oneMovie.Actors
         };
@@ -67,6 +67,7 @@ public class MovieController : ControllerBase
             MovieLength = movieDto.MovieLength,
             Language = movieDto.Language,
             MaxViews = movieDto.MaxViews,
+            MoviePrice = movieDto.MoviePrice,
             Directors = movieDto.Directors,
             Actors = movieDto.Actors
         };
@@ -74,7 +75,6 @@ public class MovieController : ControllerBase
         await _seedData.CreateMovie(movie);
         return Ok(movieDto);
     }
-
 
     [HttpPut]
     public async Task<ActionResult<MovieDTO>> UpdateMovie(MovieDTO movieDto)
@@ -86,6 +86,7 @@ public class MovieController : ControllerBase
         movie.Description = movieDto.Description;
         movie.MovieLength = movieDto.MovieLength;
         movie.Language = movieDto.Language;
+        movie.MoviePrice = movieDto.MoviePrice;
         movie.Directors = movieDto.Directors;
         movie.Actors = movieDto.Actors;
 

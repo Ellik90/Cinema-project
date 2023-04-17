@@ -22,11 +22,14 @@ namespace BiotrananMVC.Controllers
         {
             var movieViews = await _movieService.GetMovieViewsFromApi();
             var movieView = movieViews.Find(m => m.MovieViewId == movieViewId);
-            var movie = movieView.Movie ?? new Movie();
+            var movies = await _movieService.GetMoviesFromApi(); //by id direkt istället
+            var movie = movies.Find(m => m.MovieId == movieView.MovieId);
             Console.WriteLine("movie reservation anropas och movieviewid = " + movieViewId);
             var reservation = new Reservation();
             reservation.MovieView = movieView;
             reservation.MovieViewId = movieViewId;
+            reservation.Movie = movie;
+
             return View(reservation);
         }
 
@@ -77,7 +80,7 @@ namespace BiotrananMVC.Controllers
             {
                 if (m.MovieId == movieId)
                 {
-                    movie = new(m.Title, m.Description, m.Language, m.MovieLength, m.MaxViews, m.Directors, m.Actors);
+                    movie = new(m.Title, m.Description, m.Language, m.MovieLength, m.MaxViews, m.MoviePrice, m.Directors, m.Actors);
                     break;
                 }
             }

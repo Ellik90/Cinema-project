@@ -5,7 +5,6 @@ using API.DTO;
 using API.Data;
 using System.Linq;
 
-
 namespace API.Controllers;
 
 [ApiController]
@@ -64,7 +63,6 @@ public class MovieViewController : ControllerBase
         var existingMovieViews = (await _movieViewSeedData.GetMovieViewsByDateAndSalonId(movieViewDTO.Date, movieViewDTO.SalonId))
             .Where(existing => existing.Date == movieViewDTO.Date);
 
-
         if (existingMovieViews.Any())
         {
             var existingMovieTitles = string.Join(", ", existingMovieViews.Select(existing => existing.MovieTitle));
@@ -76,8 +74,7 @@ public class MovieViewController : ControllerBase
             Date = movieViewDTO.Date,
             MovieId = movieViewDTO.MovieId,
             SalonId = movieViewDTO.SalonId,
-            MovieTitle = movieViewDTO.MovieTitle
-            
+            MovieTitle = movieViewDTO.MovieTitle           
         };
 
         var addedMovieView = await _movieViewSeedData.CreateNewMovieView(movieView);
@@ -86,14 +83,11 @@ public class MovieViewController : ControllerBase
             Date = addedMovieView.Date,
             MovieId = addedMovieView.MovieId,
             SalonId = addedMovieView.SalonId,
-            MovieTitle = addedMovieView.MovieTitle
-            
+            MovieTitle = addedMovieView.MovieTitle           
         };
 
         return Ok(addedMovieViewDTO);
     }
-
-
 
     [HttpGet]
     public async Task<ActionResult<List<MovieViewDTO>>> GetAllMovieViews()
@@ -136,8 +130,6 @@ public class MovieViewController : ControllerBase
         return Ok(movieViewDTOs);
     }
 
-
-
     [HttpPut]
     public async Task<ActionResult> PutMovieViews(MovieViewDTO movieViewDTO)
     {
@@ -153,7 +145,6 @@ public class MovieViewController : ControllerBase
         await _movieViewSeedData.UpdateMovieView(movieView);
         return Ok();
     }
-
 
     [HttpDelete]
     public async Task<ActionResult<MovieViewDTO>> DeleteMovieViewById(MovieViewDTO movieViewDTO)
@@ -176,5 +167,4 @@ public class MovieViewController : ControllerBase
         };
         return Ok(deletedMovieviewDTO);
     }
-
 }

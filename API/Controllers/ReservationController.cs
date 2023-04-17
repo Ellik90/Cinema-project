@@ -17,23 +17,6 @@ public class ReservationController : ControllerBase
     }
 
 
-
-    // [HttpPost]
-    // public async Task<ActionResult<ReservationDTO>> CreateNewReservation(ReservationDTO reservationDTO)
-    // {
-    //     var reservation = new Reservation
-    //     {
-    //         ReservationId = reservationDTO.ReservationId,
-    //         CustomerName = reservationDTO.CustomerName,
-    //         PhoneNumber = reservationDTO.PhoneNumber,
-    //         ShowId = reservationDTO.ShowId,
-    //         NumberOfSeats = reservationDTO.NumberOfSeats,
-    //         DateForReservation = reservationDTO.DateForReservation
-    //     };
-    //     await _reservationSeedData.CreateNewReservations(reservation);
-    //     return Ok(reservationDTO);
-    // }
-
     [HttpPost]
     public async Task<ActionResult<ReservationDTO>> CreateNewReservation(ReservationDTO reservationDTO)
     {
@@ -47,11 +30,12 @@ public class ReservationController : ControllerBase
                 PhoneNumber = reservationDTO.PhoneNumber,
                 MovieViewId = reservationDTO.MovieViewId,
                 NumberOfSeats = reservationDTO.NumberOfSeats,
-                DateForReservation = reservationDTO.DateForReservation
+                DateForReservation = reservationDTO.DateForReservation,
+                ReservationPrice = reservationDTO.ReservationPrice
             };
 
             await _reservationSeedData.CreateNewReservations(reservation);
-            
+
             return Ok(reservationDTO);
         }
         else
@@ -59,7 +43,6 @@ public class ReservationController : ControllerBase
             return BadRequest("Not enough available seats");
         }
     }
-
 
     [HttpGet]
     public async Task<ActionResult<List<ReservationDTO>>> GetAllMovieViews()
@@ -76,7 +59,8 @@ public class ReservationController : ControllerBase
             PhoneNumber = r.PhoneNumber,
             MovieViewId = r.MovieViewId,
             NumberOfSeats = r.NumberOfSeats,
-            DateForReservation = r.DateForReservation
+            DateForReservation = r.DateForReservation,
+            ReservationPrice = r.ReservationPrice
 
         }).ToList();
         return Ok(reservationDTO);
@@ -99,8 +83,30 @@ public class ReservationController : ControllerBase
             PhoneNumber = r.PhoneNumber,
             MovieViewId = r.MovieViewId,
             NumberOfSeats = r.NumberOfSeats,
-            DateForReservation = r.DateForReservation
+            DateForReservation = r.DateForReservation,
+            ReservationPrice = r.ReservationPrice
         }).ToList();
     }
 
+    [HttpDelete]
+    public async Task<ActionResult<ReservationDTO>> DeletedReservationById(ReservationDTO reservationDTO)
+    {
+        var reservation = new Reservation()
+        {
+            ReservationId = reservationDTO.ReservationId,
+        };
+        var deletedReservation = await _reservationSeedData.DeleteReservation(reservation);
+
+        var deletedReservationDTO = new ReservationDTO()
+        {
+            ReservationId = deletedReservation.ReservationId,
+            CustomerName = deletedReservation.CustomerName,
+            PhoneNumber = deletedReservation.PhoneNumber,
+            MovieViewId = deletedReservation.MovieViewId,
+            NumberOfSeats = deletedReservation.NumberOfSeats,
+            ReservationPrice = deletedReservation.ReservationPrice,
+            DateForReservation = deletedReservation.DateForReservation
+        };
+        return Ok(deletedReservationDTO);
+    }
 }

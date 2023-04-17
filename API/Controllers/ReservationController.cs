@@ -9,10 +9,10 @@ namespace API.Controllers;
 [Route("[controller]")]
 public class ReservationController : ControllerBase
 {
-    ReservationRepository _reservationRepository;
-    public ReservationController(ReservationRepository reservationRepository)
+    IReservationRepository _iReservationRepository;
+    public ReservationController(IReservationRepository iReservationRepository)
     {
-        _reservationRepository = reservationRepository;
+        _iReservationRepository = iReservationRepository;
     }
 
     [HttpPost]
@@ -20,7 +20,7 @@ public class ReservationController : ControllerBase
     {
         try
         {
-            var availableSeats = await _reservationRepository.GetAvailableSeatsForShow(reservationDTO.MovieViewId);
+            var availableSeats = await _iReservationRepository.GetAvailableSeatsForShow(reservationDTO.MovieViewId);
 
             if (availableSeats >= reservationDTO.NumberOfSeats)
             {
@@ -34,7 +34,7 @@ public class ReservationController : ControllerBase
                     ReservationPrice = reservationDTO.ReservationPrice
                 };
 
-                var createdReservation = await _reservationRepository.CreateNewReservations(reservation);
+                var createdReservation = await _iReservationRepository.CreateNewReservations(reservation);
                 var createdReservationDTO = new ReservationDTO(createdReservation.ReservationId,
                 createdReservation.CustomerName, createdReservation.PhoneNumber, createdReservation.MovieViewId,
                 createdReservation.NumberOfSeats, createdReservation.ReservationPrice, createdReservation.DateForReservation);
@@ -56,7 +56,7 @@ public class ReservationController : ControllerBase
     {
         try
         {
-            var reservations = await _reservationRepository.GetReservations();
+            var reservations = await _iReservationRepository.GetReservations();
             if (reservations == null)
             {
                 return Ok(new List<ReservationDTO>());
@@ -85,13 +85,12 @@ public class ReservationController : ControllerBase
     {
         try
         {
-            var reservations = await _reservationRepository.GetReservationsForShow(movieViewId);
+            var reservations = await _iReservationRepository.GetReservationsForShow(movieViewId);
 
             if (reservations == null || reservations.Count() == 0)
             {
                 return NotFound();
             }
-
             return reservations.Select(r => new ReservationDTO
             {
                 ReservationId = r.ReservationId,
@@ -119,7 +118,7 @@ public class ReservationController : ControllerBase
                 ReservationId = reservationDTO.ReservationId,
             };
 
-            var deletedReservation = await _reservationRepository.DeleteReservation(reservation);
+            var deletedReservation = await _iReservationRepository.DeleteReservation(reservation);
 
             if (deletedReservation == null)
             {
@@ -136,7 +135,6 @@ public class ReservationController : ControllerBase
                 ReservationPrice = deletedReservation.ReservationPrice,
                 DateForReservation = deletedReservation.DateForReservation
             };
-
             return Ok(deletedReservationDTO);
         }
         catch (Exception ex)

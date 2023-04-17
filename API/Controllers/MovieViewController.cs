@@ -9,12 +9,12 @@ namespace API.Controllers;
 [Route("[controller]")]
 public class MovieViewController : ControllerBase
 {
-    MovieViewRepository _movieViewRepository;
-    MovieRepository _movieRepository;
-    public MovieViewController(MovieViewRepository movieViewRepository, MovieRepository movieRepository)
+    IMovieViewRepository _iMovieViewRepository;
+    IMovieRepository _iMovieRepository;
+    public MovieViewController(IMovieViewRepository iMovieViewRepository, IMovieRepository iMovieRepository)
     {
-        _movieViewRepository = movieViewRepository;
-        _movieRepository = movieRepository;
+        _iMovieViewRepository = iMovieViewRepository;
+        _iMovieRepository = iMovieRepository;
     }
 
     [HttpPost]
@@ -22,7 +22,7 @@ public class MovieViewController : ControllerBase
     {
         try
         {
-            var existingMovieViews = (await _movieViewRepository.GetMovieViewsByDateAndSalonId(movieViewDTO.Date, movieViewDTO.SalonId))
+            var existingMovieViews = (await _iMovieViewRepository.GetMovieViewsByDateAndSalonId(movieViewDTO.Date, movieViewDTO.SalonId))
                 .Where(existing => existing.Date == movieViewDTO.Date);
 
             if (existingMovieViews.Any())
@@ -39,7 +39,7 @@ public class MovieViewController : ControllerBase
                 MovieTitle = movieViewDTO.MovieTitle
             };
 
-            var addedMovieView = await _movieViewRepository.CreateNewMovieView(movieView);
+            var addedMovieView = await _iMovieViewRepository.CreateNewMovieView(movieView);
             var addedMovieViewDTO = new MovieViewDTO()
             {
                 Date = addedMovieView.Date,
@@ -61,7 +61,7 @@ public class MovieViewController : ControllerBase
     {
         try
         {
-            var views = await _movieViewRepository.GetMovieViews();
+            var views = await _iMovieViewRepository.GetMovieViews();
             if (views == null)
             {
                 return Ok(new List<MovieViewDTO>());
@@ -89,8 +89,8 @@ public class MovieViewController : ControllerBase
     {
         try
         {
-            var movies = await _movieRepository.GetMovies();
-            var movieViews = await _movieViewRepository.GetMovieViews();
+            var movies = await _iMovieRepository.GetMovies();
+            var movieViews = await _iMovieViewRepository.GetMovieViews();
             var upcomingMovieViews = movieViews.Where(v => v.Date >= DateTime.Now).ToList();
             var movieViewDTOs = upcomingMovieViews.Select(v => new MovieViewDTO
             {
@@ -116,7 +116,7 @@ public class MovieViewController : ControllerBase
     {
         try
         {
-            var movieViews = await _movieViewRepository.GetMovieViews();
+            var movieViews = await _iMovieViewRepository.GetMovieViews();
 
             var movieView = movieViews.Find(m => m.MovieViewId == movieViewDTO.MovieViewId);
             movieView.MovieViewId = movieViewDTO.MovieViewId;
@@ -125,7 +125,7 @@ public class MovieViewController : ControllerBase
             movieView.MovieId = movieViewDTO.MovieId;
             movieView.SalonId = movieViewDTO.SalonId;
 
-            await _movieViewRepository.UpdateMovieView(movieView);
+            await _iMovieViewRepository.UpdateMovieView(movieView);
             return Ok();
         }
         catch (Exception ex)
@@ -146,7 +146,7 @@ public class MovieViewController : ControllerBase
                 MovieId = movieViewDTO.MovieId,
                 SalonId = movieViewDTO.SalonId
             };
-            var deletedMovie = await _movieViewRepository.DeleteMovieById(movieView);
+            var deletedMovie = await _iMovieViewRepository.DeleteMovieViewById(movieView);
 
             var deletedMovieviewDTO = new MovieViewDTO()
             {

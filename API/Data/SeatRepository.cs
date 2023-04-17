@@ -2,7 +2,7 @@ using API.Models;
 using Microsoft.EntityFrameworkCore;
 namespace API.Data;
 
-public class SeatRepository
+public class SeatRepository : ISeatRepository
 {
     MyDbContext _myDbContext;
 
@@ -91,6 +91,4 @@ public class SeatRepository
             return false;
         }
     }
-
-
 }

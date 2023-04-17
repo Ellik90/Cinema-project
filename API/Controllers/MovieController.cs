@@ -9,10 +9,10 @@ namespace API.Controllers;
 [Route("[controller]")]
 public class MovieController : ControllerBase
 {
-    MovieRepository _movieRepository;
-    public MovieController(MovieRepository movieRepository)
+    IMovieRepository _iMovieRepository;
+    public MovieController(IMovieRepository iMovieRepository)
     {
-        _movieRepository = movieRepository;
+        _iMovieRepository = iMovieRepository;
     }
 
     [HttpGet]
@@ -20,7 +20,7 @@ public class MovieController : ControllerBase
     {
         try
         {
-            var movies = await _movieRepository.GetMovies();
+            var movies = await _iMovieRepository.GetMovies();
             if (movies == null)
             {
                 return Ok(new List<MovieDTO>());
@@ -51,7 +51,7 @@ public class MovieController : ControllerBase
     {
         try
         {
-            var oneMovie = await _movieRepository.GetMovieById(movieId);
+            var oneMovie = await _iMovieRepository.GetMovieById(movieId);
             if (oneMovie == null)
             {
                 return NotFound();
@@ -94,7 +94,7 @@ public class MovieController : ControllerBase
                 Actors = movieDto.Actors
             };
 
-            await _movieRepository.CreateMovie(movie);
+            await _iMovieRepository.CreateMovie(movie);
             return Ok(movieDto);
         }
         catch (Exception ex)
@@ -108,7 +108,7 @@ public class MovieController : ControllerBase
     {
         try
         {
-            var movie = await _movieRepository.GetMovieById(movieDto.MovieId);
+            var movie = await _iMovieRepository.GetMovieById(movieDto.MovieId);
             if (movie == null)
             {
                 return NotFound($"Filmen med Id {movieDto.MovieId} hittades inte.");
@@ -123,7 +123,7 @@ public class MovieController : ControllerBase
             movie.Directors = movieDto.Directors;
             movie.Actors = movieDto.Actors;
 
-            await _movieRepository.UpdateMovie(movie);
+            await _iMovieRepository.UpdateMovie(movie);
             return Ok(movieDto);
         }
         catch (Exception ex)
@@ -144,7 +144,7 @@ public class MovieController : ControllerBase
                 Language = movieDTO.Language,
                 MovieLength = movieDTO.MovieLength
             };
-            var deletedMovie = await _movieRepository.DeleteMovie(movie);
+            var deletedMovie = await _iMovieRepository.DeleteMovie(movie);
 
             if (deletedMovie == null)
             {
@@ -171,7 +171,7 @@ public class MovieController : ControllerBase
     {
         try
         {
-            await _movieRepository.DeleteAll();
+            await _iMovieRepository.DeleteAll();
             return Ok();
         }
         catch (Exception ex)

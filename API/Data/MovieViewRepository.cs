@@ -2,7 +2,7 @@ using API.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Data;
-public class MovieViewRepository
+public class MovieViewRepository : IMovieViewRepository
 {
     MyDbContext _myDbContext;
 
@@ -24,7 +24,6 @@ public class MovieViewRepository
             throw new Exception("Ett fel uppstod", ex);
         }
     }
-
     public async Task<List<MovieView>> GetMovieViews()
     {
         try
@@ -170,7 +169,7 @@ public class MovieViewRepository
         }
     }
 
-    public async Task<MovieView> DeleteMovieById(MovieView movieView)
+    public async Task<MovieView> DeleteMovieViewById(MovieView movieView)
     {
         try
         {
@@ -179,7 +178,6 @@ public class MovieViewRepository
             {
                 throw new ArgumentException("Filmvisningen hittades inte");
             }
-
             _myDbContext.movieViews.Remove(existingMovieView);
             await _myDbContext.SaveChangesAsync();
             return existingMovieView;

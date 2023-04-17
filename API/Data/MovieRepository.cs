@@ -2,7 +2,7 @@ using API.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Data;
-public class MovieRepository
+public class MovieRepository : IMovieRepository
 {
     MyDbContext _myDbContext;
     public MovieRepository(MyDbContext myDbContext)

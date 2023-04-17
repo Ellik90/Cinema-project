@@ -2,7 +2,7 @@ using API.Models;
 using Microsoft.EntityFrameworkCore;
 namespace API.Data;
 
-public class SalonRepository
+public class SalonRepository : ISalonRepository
 {
     MyDbContext _myDbContext;
 

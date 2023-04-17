@@ -10,11 +10,11 @@ namespace API.Controllers;
 [Route("[controller]")]
 public class SeatController : ControllerBase
 {
-    SeatRepository _seatRepository;
+    ISeatRepository _iSeatRepository;
 
-    public SeatController(SeatRepository seatRepository)
+    public SeatController(ISeatRepository iSeatRepository)
     {
-        _seatRepository = seatRepository;
+        _iSeatRepository = iSeatRepository;
     }
 
     [HttpPost]
@@ -27,7 +27,7 @@ public class SeatController : ControllerBase
                 SeatId = seatDTO.SeatId,
                 SalonId = seatDTO.SalonId,
             };
-            await _seatRepository.CreateNewSeat(seat);
+            await _iSeatRepository.CreateNewSeat(seat);
             return Ok(seatDTO);
         }
         catch (Exception ex)
@@ -36,13 +36,12 @@ public class SeatController : ControllerBase
         }
     }
 
-
     [HttpGet]
     public async Task<ActionResult<SeatDTO>> GetSeats()
     {
         try
         {
-            var seats = await _seatRepository.GetSeats();
+            var seats = await _iSeatRepository.GetSeats();
             if (seats == null)
             {
                 return Ok(new List<SeatDTO>());
@@ -60,14 +59,13 @@ public class SeatController : ControllerBase
         }
     }
 
-
     [HttpGet("seatsById/{seatIds}")]
     public async Task<ActionResult<SeatDTO>> GetSeatById(string seatIds)
     {
         try
         {
             List<int> seatIdsList = seatIds.Split(",").Select(int.Parse).ToList();
-            List<Seat> seats = await _seatRepository.GetSeatsById(seatIdsList);
+            List<Seat> seats = await _iSeatRepository.GetSeatsById(seatIdsList);
             var seatDto = seats.Select(s => new SeatDTO
             {
                 SalonId = s.SalonId,
@@ -86,18 +84,17 @@ public class SeatController : ControllerBase
     {
         try
         {
-            var seats = await _seatRepository.GetSeats();
+            var seats = await _iSeatRepository.GetSeats();
 
             var seat = seats.Find(s => s.SeatId == seatDTO.SeatId);
             if (seat == null)
             {
                 return NotFound("säte hittades inte");
             }
-
             seat.SeatId = seatDTO.SeatId;
             seat.SalonId = seatDTO.SalonId;
 
-            await _seatRepository.UpdateSeat(seat);
+            await _iSeatRepository.UpdateSeat(seat);
             return Ok();
         }
         catch (Exception ex)
@@ -112,7 +109,7 @@ public class SeatController : ControllerBase
         try
         {
             List<int> seatIdsList = seatDTO.Split(",").Select(int.Parse).ToList();
-            bool success = await _seatRepository.DeleteSeats(seatIdsList);
+            bool success = await _iSeatRepository.DeleteSeats(seatIdsList);
             if (success)
             {
                 return Ok("Säten borttagna");

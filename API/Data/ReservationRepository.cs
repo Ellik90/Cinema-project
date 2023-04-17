@@ -2,7 +2,7 @@ using API.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Data;
-public class ReservationRepository
+public class ReservationRepository : IReservationRepository
 {
     MyDbContext _myDbContext;
 

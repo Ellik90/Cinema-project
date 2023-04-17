@@ -9,11 +9,11 @@ namespace API.Controllers;
 [Route("[controller]")]
 public class SalonController : ControllerBase
 {
-    SalonRepository _salonRepository;
+    ISalonRepository _iSalonRepository;
 
-    public SalonController(SalonRepository salonRepository)
+    public SalonController(ISalonRepository iSalonRepository)
     {
-        _salonRepository = salonRepository;
+        _iSalonRepository = iSalonRepository;
     }
 
     [HttpGet]
@@ -21,7 +21,7 @@ public class SalonController : ControllerBase
     {
         try
         {
-            var salons = await _salonRepository.GetSalons();
+            var salons = await _iSalonRepository.GetSalons();
             if (salons == null)
             {
                 return Ok(new List<SalonDTO>());
@@ -47,7 +47,7 @@ public class SalonController : ControllerBase
     {
         try
         {
-            var salonDTO = await _salonRepository.GetSalonById(salonId);
+            var salonDTO = await _iSalonRepository.GetSalonById(salonId);
             if (salonDTO == null)
             {
                 return NotFound();
@@ -81,7 +81,7 @@ public class SalonController : ControllerBase
                 NumberOfSeats = salonDTO.NumberOfSeats,
                 SalonPrice = salonDTO.SalonPrice
             };
-            await _salonRepository.CreateNewSalons(salon);
+            await _iSalonRepository.CreateNewSalons(salon);
             return Ok(salonDTO);
         }
         catch (Exception ex)
@@ -95,20 +95,18 @@ public class SalonController : ControllerBase
     {
         try
         {
-            var salon = await _salonRepository.GetSalonById(salonDTO.SalonId);
+            var salon = await _iSalonRepository.GetSalonById(salonDTO.SalonId);
 
             if (salon == null)
             {
                 return NotFound();
             }
-
             salon.SalonName = salonDTO.SalonName;
             salon.NumberOfRows = salonDTO.NumberOfRows;
             salon.NumberOfSeats = salonDTO.NumberOfSeats;
             salon.SalonPrice = salonDTO.SalonPrice;
 
-            await _salonRepository.UpdateSalon(salon);
-
+            await _iSalonRepository.UpdateSalon(salon);
             return Ok(salonDTO);
         }
         catch (Exception ex)
@@ -122,8 +120,8 @@ public class SalonController : ControllerBase
     {
         try
         {
-            var salon = await _salonRepository.GetSalonById(salonDTO.SalonId);
-            await _salonRepository.DeleteSalon(salon);
+            var salon = await _iSalonRepository.GetSalonById(salonDTO.SalonId);
+            await _iSalonRepository.DeleteSalon(salon);
             return Ok(salonDTO);
         }
         catch (Exception ex)

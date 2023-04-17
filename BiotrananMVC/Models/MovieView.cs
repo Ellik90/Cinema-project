@@ -1,5 +1,4 @@
 namespace BiotrananMVC.Models;
-
 public class MovieView
 {
     public int MovieViewId { get; set; }
@@ -19,9 +18,6 @@ public class MovieView
         SalonId = salonId;
         Movie = movie;
         AvailableSeats = availableSeats;
-        
-        // Movie = movie;
-        // Salon = salon;
     }
 
     public MovieView() { }

@@ -22,9 +22,10 @@ namespace BiotrananMVC.Controllers
         {
             var movieViews = await _movieService.GetMovieViewsFromApi();
             var movieView = movieViews.Find(m => m.MovieViewId == movieViewId);
+
             var movies = await _movieService.GetMoviesFromApi(); //by id direkt istället
             var movie = movies.Find(m => m.MovieId == movieView.MovieId);
-            Console.WriteLine("movie reservation anropas och movieviewid = " + movieViewId);
+
             var reservation = new Reservation();
             reservation.MovieView = movieView;
             reservation.MovieViewId = movieViewId;
@@ -32,6 +33,13 @@ namespace BiotrananMVC.Controllers
 
             return View(reservation);
         }
+        public async Task<IActionResult> ConfirmReservation(Reservation reservation)
+        {
+            var reservationPrice = reservation.NumberOfSeats * reservation.Movie.MoviePrice;
+            reservation.ReservationPrice = reservationPrice;
+            return View(reservation);
+        }
+
 
 
 
@@ -47,12 +55,12 @@ namespace BiotrananMVC.Controllers
 
             var movieViews = await _movieService.GetMovieViewsFromApi(); //ändra till by id
             var movieView = movieViews.Find(m => m.MovieViewId == newReservation.MovieViewId);
-        
+
             var bookedReservationViewModel = new BookedReservationViewModel(newReservation.ReservationId,
             newReservation.CustomerName, newReservation.PhoneNumber, newReservation.NumberOfSeats, movieView.Date,
-            movieView.MovieTitle 
+            movieView.MovieTitle
             );
-            return View("BookedReservations", bookedReservationViewModel);
+            return View(bookedReservationViewModel);
         }
 
 

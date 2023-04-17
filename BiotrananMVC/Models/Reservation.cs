@@ -8,10 +8,10 @@ public class Reservation
     public int NumberOfSeats { get; set; }
     public DateTime DateForReservation { get; set; }
     public decimal ReservationPrice { get; set; }
-    public MovieView MovieView{get;set;}
-    public Movie Movie;
+    public MovieView MovieView { get; set; }
+    public Movie Movie { get; set; }
 
-    public Reservation( string customerName, string phoneNumber, int movieViewId, int numberOfSeats, DateTime dateForReservation, decimal reservationPrice)
+    public Reservation( string customerName, string phoneNumber, int movieViewId, int numberOfSeats, DateTime dateForReservation, decimal reservationPrice, Movie movie)
     {
         CustomerName = customerName;
         PhoneNumber = phoneNumber;
@@ -19,6 +19,7 @@ public class Reservation
         NumberOfSeats = numberOfSeats;
         DateForReservation = dateForReservation;
         ReservationPrice = reservationPrice;
+        Movie = movie;
     }
     public Reservation(){}
 }

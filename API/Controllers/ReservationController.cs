@@ -34,9 +34,11 @@ public class ReservationController : ControllerBase
                 ReservationPrice = reservationDTO.ReservationPrice
             };
 
-            await _reservationSeedData.CreateNewReservations(reservation);
-
-            return Ok(reservationDTO);
+            var createdReservation = await _reservationSeedData.CreateNewReservations(reservation);
+            var createdReservationDTO = new ReservationDTO(createdReservation.ReservationId,
+            createdReservation.CustomerName, createdReservation.PhoneNumber, createdReservation.MovieViewId,
+            createdReservation.NumberOfSeats, createdReservation.ReservationPrice, createdReservation.DateForReservation);
+            return Ok(createdReservationDTO);
         }
         else
         {

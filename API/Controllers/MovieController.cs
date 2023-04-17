@@ -123,5 +123,4 @@ public class MovieController : ControllerBase
         await _seedData.DeleteAll();
         return Ok();
     }
-
 }

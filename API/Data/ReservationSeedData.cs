@@ -63,7 +63,8 @@ public class ReservationSeedData
         _myDbContext.reservations.Add(reservations);
         await _myDbContext.SaveChangesAsync();
         await UpdateSeats(reservations);
-        return reservations;
+        var createdReservation = await _myDbContext.reservations.OrderByDescending(r => r.ReservationId).FirstOrDefaultAsync();
+        return createdReservation;
     }
 
     private async Task UpdateSeats(Reservation reservation)

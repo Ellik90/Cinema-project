@@ -1,0 +1,39 @@
+@model BiotrananMVC.Models.Reservation
+
+<div class="text-center">
+    <h1 class="display-4">Bekräfta reservation</h1>
+    <h2 class="display-4">>> @Model.Movie.Title <<< /h2>
+            <h3 class="lead"><strong>Dag:</strong> @Model.MovieView.Date.ToShortDateString() <strong>Tid:</strong>
+                @Model.MovieView.Date.ToShortTimeString()</h3>
+</div>
+
+
+<form method="post" asp-controller="Home" asp-action="BookedReservations">
+    <div class="form-group">
+        <div class="text-center">
+            <h4>Reservationsinformation</h4>
+            <ul class="list-group">
+                <li class="list-group-item"><strong>Film:</strong> @Model.Movie.Title</li>
+                <li class="list-group-item"><strong>Dag:</strong> @Model.MovieView.Date.ToShortDateString()</li>
+                <li class="list-group-item"><strong>Tid:</strong> @Model.MovieView.Date.ToShortTimeString()</li>
+                <input type="hidden" asp-for="MovieView.Date" value=@Model.MovieView.Date/>
+                <li class="list-group-item"><strong>Namn:</strong> @Model.CustomerName</li>
+                <input type="hidden" asp-for="CustomerName" value=@Model.CustomerName />
+                <li class="list-group-item"><strong>Telefonnummer:</strong> @Model.PhoneNumber</li>
+                <input type="hidden" asp-for="PhoneNumber" value=@Model.PhoneNumber />
+                <li class="list-group-item"><strong>Antal platser:</strong> @Model.NumberOfSeats</li>                
+                <input type="hidden" asp-for="NumberOfSeats" value=@Model.NumberOfSeats />
+                <li class="list-group-item"><strong>Pris:</strong> @Model.ReservationPrice</li>                
+                <input type="hidden" asp-for="ReservationPrice" value=@Model.ReservationPrice />
+                <input type="hidden" asp-for="MovieViewId" value=@Model.MovieViewId />
+            </ul>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Bekräfta reservation</button>
+</form>
+
+<h3>
+    <a asp-controller="Home" asp-action="UpcomingViews">Tillbaka</a>
+</h3>
+
+

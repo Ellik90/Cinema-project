@@ -1,105 +1,43 @@
 @model BiotrananMVC.Models.Reservation
 
-@{
-    if(Model.Movie == null)
-    {
-        throw new ArgumentNullException(nameof(Model.Movie));
-    }
-
-    // Hämta pris för den valda filmen från databasen
-    var moviePrice = Model.Movie.MoviePrice;
-    
-    // Beräkna totalpriset
-    var totalPrice = moviePrice * Model.NumberOfSeats;
-
-    // Spara totalpriset i ViewBag
-    ViewBag.TotalPrice = totalPrice;
-}
-
 <div class="text-center">
-    <h1 class="display-4">Reservera biljetter</h1>
-    <h2 class="display-4">>> @Model.MovieView.MovieTitle <<</h2>
-    <h3 class="lead"><strong>Dag:</strong> @Model.MovieView.Date.ToShortDateString() <strong>Tid:</strong> @Model.MovieView.Date.ToShortTimeString()</h3>
+<h1 class="display-4">Reservera biljetter</h1>
+<h2 class="display-4">>> @Model.Movie.Title <<</h2>
+<h3 class="lead"><strong>Dag:</strong> @Model.MovieView.Date.ToShortDateString() <strong>Tid:</strong>
+@Model.MovieView.Date.ToShortTimeString()</h3>
 </div>
 
 
-<form method="post" asp-controller="Home" asp-action="BookedReservations">
-    <div class="form-group">
-        <label>Namn:</label>
-        <input type="text" class="form-control" asp-for="CustomerName" />
-    </div>
-    <div class="form-group">
-        <label>Telefonnummer:</label>
-        <input type="text" class="form-control" asp-for="PhoneNumber" />
-    </div>
-    <div class="form-group">
-        <label>Välj hur många platser:</label>
-        <input type="number" class="form-control" asp-for="NumberOfSeats" />
-    </div>
-    <h4>Totala priset: @ViewBag.TotalPrice kr</h4>
+<form method="post" asp-controller="Home" asp-action="ConfirmReservation">
+<div class="form-group">
+<label>Namn:</label>
+<input type="text" class="form-control" asp-for="CustomerName" />
+</div>
+<div class="form-group">
+<label>Telefonnummer:</label>
+<input type="text" class="form-control" asp-for="PhoneNumber" />
+</div>
+<div class="form-group">
+<label>Välj hur många platser:</label>
+<input type="number" class="form-control" asp-for="NumberOfSeats" />
+</div>
 
-    <div class="form-group" hidden>
-        <label>Datum:</label>
-        <input type="date" class="form-control" asp-for="DateForReservation" />
-    </div>
+<div class="form-group" hidden>
+<label>Datum:</label>
+<input type="date" class="form-control" asp-for="DateForReservation" />
+</div>
 
-    <input type="hidden" asp-for="MovieViewId" />
+<input type="hidden" asp-for="MovieViewId" value=@Model.MovieViewId />
+<input type="hidden" asp-for="Movie.MoviePrice" value=@Model.Movie.MoviePrice />
+<input type="hidden" asp-for="MovieView.Date" value=@Model.MovieView.Date />
+<input type="hidden" asp-for="Movie.Title" value=@Model.Movie.Title />
 
-    <button type="submit" class="btn btn-primary">Reservera</button>
+<button type="submit" class="btn btn-primary">Reservera</button>
 </form>
 
 <h3>
-    <a asp-controller="Home" asp-action="UpcomingViews">Tillbaka</a>
+<a asp-controller="Home" asp-action="UpcomingViews">Tillbaka</a>
 </h3>
-
-
-
-
-
-@* @model BiotrananMVC.Models.Reservation
-
-@{
-    if(Model.MovieView == null)
-    {
-        throw new ArgumentNullException(nameof(Model.MovieView));
-    }
-}
-
-<div class="text-center">
-    <h1 class="display-4">Reservera biljetter</h1>
-    <h2 class="display-4">>> @Model.MovieView.MovieTitle <<</h2>
-    <h3 class="lead"><strong>Dag:</strong> @Model.MovieView.Date.ToShortDateString() <strong>Tid:</strong> @Model.MovieView.Date.ToShortTimeString()</h3>
-</div>
-
-
-<form method="post" asp-controller="Home" asp-action="BookedReservations">
-    <div class="form-group">
-        <label>Namn:</label>
-        <input type="text" class="form-control" asp-for="CustomerName" />
-    </div>
-    <div class="form-group">
-        <label>Telefonnummer:</label>
-        <input type="text" class="form-control" asp-for="PhoneNumber" />
-    </div>
-    <div class="form-group">
-        <label>Välj hur många platser:</label>
-        <input type="number" class="form-control" asp-for="NumberOfSeats" />
-    </div>
-    <h4>Totala priset: @ViewBag.TotalPrice kr</h4>
-
-    <div class="form-group" hidden>
-        <label>Datum:</label>
-        <input type="date" class="form-control" asp-for="DateForReservation" />
-    </div>
-
-    <input type="hidden" asp-for="MovieViewId" />
-
-    <button type="submit" class="btn btn-primary">Reservera</button>
-</form>
-
-<h3>
-    <a asp-controller="Home" asp-action="UpcomingViews">Tillbaka</a>
-</h3> *@
 
 
 

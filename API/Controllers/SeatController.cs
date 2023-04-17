@@ -10,81 +10,122 @@ namespace API.Controllers;
 [Route("[controller]")]
 public class SeatController : ControllerBase
 {
-    SeatSeedData _seatSeedData;
+    SeatRepository _seatRepository;
 
-    public SeatController(SeatSeedData seatSeedData)
+    public SeatController(SeatRepository seatRepository)
     {
-        _seatSeedData = seatSeedData;
+        _seatRepository = seatRepository;
     }
 
     [HttpPost]
     public async Task<ActionResult<SeatDTO>> CreateSeat(SeatDTO seatDTO)
     {
-        var seat = new Seat
+        try
         {
-            SeatId = seatDTO.SeatId,
-            SalonId = seatDTO.SalonId,
-        };
-        await _seatSeedData.CreateNewSeat(seat);
-        return Ok(seatDTO);
+            var seat = new Seat
+            {
+                SeatId = seatDTO.SeatId,
+                SalonId = seatDTO.SalonId,
+            };
+            await _seatRepository.CreateNewSeat(seat);
+            return Ok(seatDTO);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Det gick inte att skapa en sits: {ex.Message}");
+        }
     }
+
 
     [HttpGet]
     public async Task<ActionResult<SeatDTO>> GetSeats()
     {
-        var seats = await _seatSeedData.GetSeats();
-        if (seats == null)
+        try
         {
-            return Ok(new List<SeatDTO>());
+            var seats = await _seatRepository.GetSeats();
+            if (seats == null)
+            {
+                return Ok(new List<SeatDTO>());
+            }
+            var seatDTO = seats.Select(s => new SeatDTO
+            {
+                SalonId = s.SalonId,
+                SeatId = s.SeatId,
+            }).ToList();
+            return Ok(seatDTO);
         }
-        var seatDTO = seats.Select(s => new SeatDTO
+        catch (Exception ex)
         {
-            SalonId = s.SalonId,
-            SeatId = s.SeatId,
-        }).ToList();
-        return Ok(seatDTO);
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Ett fel uppstod vid hämtning av säten: {ex.Message}");
+        }
     }
+
 
     [HttpGet("seatsById/{seatIds}")]
     public async Task<ActionResult<SeatDTO>> GetSeatById(string seatIds)
     {
-        List<int> seatIdsList = seatIds.Split(",").Select(int.Parse).ToList();
-        List<Seat> seats = await _seatSeedData.GetSeatsById(seatIdsList);
-        var seatDto = seats.Select(s => new SeatDTO
+        try
         {
-            SalonId = s.SalonId,
-            SeatId = s.SeatId,
-        }).ToList();
-        return Ok(seatDto);
+            List<int> seatIdsList = seatIds.Split(",").Select(int.Parse).ToList();
+            List<Seat> seats = await _seatRepository.GetSeatsById(seatIdsList);
+            var seatDto = seats.Select(s => new SeatDTO
+            {
+                SalonId = s.SalonId,
+                SeatId = s.SeatId,
+            }).ToList();
+            return Ok(seatDto);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Ett fel uppstod: {ex.Message}");
+        }
     }
 
     [HttpPut]
     public async Task<ActionResult<SeatDTO>> UpdateSeats(SeatDTO seatDTO)
     {
-        var seats = await _seatSeedData.GetSeats();
+        try
+        {
+            var seats = await _seatRepository.GetSeats();
 
-        var seat = seats.Find(s => s.SeatId == seatDTO.SeatId);
-        seat.SeatId = seatDTO.SeatId;
-        seat.SalonId = seatDTO.SalonId;
+            var seat = seats.Find(s => s.SeatId == seatDTO.SeatId);
+            if (seat == null)
+            {
+                return NotFound("säte hittades inte");
+            }
 
-        await _seatSeedData.UpdateSeat(seat);
-        return Ok();
+            seat.SeatId = seatDTO.SeatId;
+            seat.SalonId = seatDTO.SalonId;
+
+            await _seatRepository.UpdateSeat(seat);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, "Ett fel uppstod: " + ex.Message);
+        }
     }
 
     [HttpDelete]
     public async Task<ActionResult> DeleteSeat(string seatDTO)
     {
-        List<int> seatIdsList = seatDTO.Split(",").Select(int.Parse).ToList();
-        bool success = await _seatSeedData.DeleteSeats(seatIdsList);
-        if (success)
+        try
         {
-            return Ok("Säten borttagna");
+            List<int> seatIdsList = seatDTO.Split(",").Select(int.Parse).ToList();
+            bool success = await _seatRepository.DeleteSeats(seatIdsList);
+            if (success)
+            {
+                return Ok("Säten borttagna");
+            }
+            else
+            {
+                return NotFound("Kunde inte hitta de angivna sätena");
+            }
         }
-        else
+        catch (Exception ex)
         {
-            return NotFound("Kunde inte hitta de angivna sätena");
+            return StatusCode(500, $"Ett fel inträffade: {ex.Message}");
         }
     }
-
 }
 

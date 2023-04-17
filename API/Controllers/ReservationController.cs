@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using API.Models;
 using API.DTO;
 using API.Data;
@@ -10,105 +9,139 @@ namespace API.Controllers;
 [Route("[controller]")]
 public class ReservationController : ControllerBase
 {
-    ReservationSeedData _reservationSeedData;
-    public ReservationController(ReservationSeedData reservationSeedData)
+    ReservationRepository _reservationRepository;
+    public ReservationController(ReservationRepository reservationRepository)
     {
-        _reservationSeedData = reservationSeedData;
+        _reservationRepository = reservationRepository;
     }
-
 
     [HttpPost]
     public async Task<ActionResult<ReservationDTO>> CreateNewReservation(ReservationDTO reservationDTO)
     {
-        var availableSeats = await _reservationSeedData.GetAvailableSeatsForShow(reservationDTO.MovieViewId);
-
-        if (availableSeats >= reservationDTO.NumberOfSeats)
+        try
         {
-            var reservation = new Reservation
+            var availableSeats = await _reservationRepository.GetAvailableSeatsForShow(reservationDTO.MovieViewId);
+
+            if (availableSeats >= reservationDTO.NumberOfSeats)
             {
-                CustomerName = reservationDTO.CustomerName,
-                PhoneNumber = reservationDTO.PhoneNumber,
-                MovieViewId = reservationDTO.MovieViewId,
-                NumberOfSeats = reservationDTO.NumberOfSeats,
-                DateForReservation = reservationDTO.DateForReservation,
-                ReservationPrice = reservationDTO.ReservationPrice
-            };
+                var reservation = new Reservation
+                {
+                    CustomerName = reservationDTO.CustomerName,
+                    PhoneNumber = reservationDTO.PhoneNumber,
+                    MovieViewId = reservationDTO.MovieViewId,
+                    NumberOfSeats = reservationDTO.NumberOfSeats,
+                    DateForReservation = reservationDTO.DateForReservation,
+                    ReservationPrice = reservationDTO.ReservationPrice
+                };
 
-            var createdReservation = await _reservationSeedData.CreateNewReservations(reservation);
-            var createdReservationDTO = new ReservationDTO(createdReservation.ReservationId,
-            createdReservation.CustomerName, createdReservation.PhoneNumber, createdReservation.MovieViewId,
-            createdReservation.NumberOfSeats, createdReservation.ReservationPrice, createdReservation.DateForReservation);
-            return Ok(createdReservationDTO);
+                var createdReservation = await _reservationRepository.CreateNewReservations(reservation);
+                var createdReservationDTO = new ReservationDTO(createdReservation.ReservationId,
+                createdReservation.CustomerName, createdReservation.PhoneNumber, createdReservation.MovieViewId,
+                createdReservation.NumberOfSeats, createdReservation.ReservationPrice, createdReservation.DateForReservation);
+                return Ok(createdReservationDTO);
+            }
+            else
+            {
+                return BadRequest("Inte tillräckligt med lediga platser");
+            }
         }
-        else
+        catch (Exception ex)
         {
-            return BadRequest("Not enough available seats");
+            return StatusCode(StatusCodes.Status500InternalServerError, "Ett problem uppstod.");
         }
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<ReservationDTO>>> GetAllMovieViews()
+    public async Task<ActionResult<List<ReservationDTO>>> GetAllMovieReservations()
     {
-        var reservations = await _reservationSeedData.GetReservations();
-        if (reservations == null)
+        try
         {
-            return Ok(new List<ReservationDTO>());
-        }
-        var reservationDTO = reservations.Select(r => new ReservationDTO
-        {
-            ReservationId = r.ReservationId,
-            CustomerName = r.CustomerName,
-            PhoneNumber = r.PhoneNumber,
-            MovieViewId = r.MovieViewId,
-            NumberOfSeats = r.NumberOfSeats,
-            DateForReservation = r.DateForReservation,
-            ReservationPrice = r.ReservationPrice
+            var reservations = await _reservationRepository.GetReservations();
+            if (reservations == null)
+            {
+                return Ok(new List<ReservationDTO>());
+            }
+            var reservationDTO = reservations.Select(r => new ReservationDTO
+            {
+                ReservationId = r.ReservationId,
+                CustomerName = r.CustomerName,
+                PhoneNumber = r.PhoneNumber,
+                MovieViewId = r.MovieViewId,
+                NumberOfSeats = r.NumberOfSeats,
+                DateForReservation = r.DateForReservation,
+                ReservationPrice = r.ReservationPrice
 
-        }).ToList();
-        return Ok(reservationDTO);
+            }).ToList();
+            return Ok(reservationDTO);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Ett fel uppstod: {ex.Message}");
+        }
     }
 
     [HttpGet("{movieViewId}")]
     public async Task<ActionResult<List<ReservationDTO>>> GetReservationsForShow(int movieViewId)
     {
-        var reservations = await _reservationSeedData.GetReservationsForShow(movieViewId);
-
-        if (reservations == null || reservations.Count() == 0)
+        try
         {
-            return NotFound();
+            var reservations = await _reservationRepository.GetReservationsForShow(movieViewId);
+
+            if (reservations == null || reservations.Count() == 0)
+            {
+                return NotFound();
+            }
+
+            return reservations.Select(r => new ReservationDTO
+            {
+                ReservationId = r.ReservationId,
+                CustomerName = r.CustomerName,
+                PhoneNumber = r.PhoneNumber,
+                MovieViewId = r.MovieViewId,
+                NumberOfSeats = r.NumberOfSeats,
+                DateForReservation = r.DateForReservation,
+                ReservationPrice = r.ReservationPrice
+            }).ToList();
         }
-
-        return reservations.Select(r => new ReservationDTO
+        catch (Exception ex)
         {
-            ReservationId = r.ReservationId,
-            CustomerName = r.CustomerName,
-            PhoneNumber = r.PhoneNumber,
-            MovieViewId = r.MovieViewId,
-            NumberOfSeats = r.NumberOfSeats,
-            DateForReservation = r.DateForReservation,
-            ReservationPrice = r.ReservationPrice
-        }).ToList();
+            return StatusCode(StatusCodes.Status500InternalServerError, "Ett fel uppstod vid hämtning av reservationer för en film.");
+        }
     }
 
     [HttpDelete]
     public async Task<ActionResult<ReservationDTO>> DeletedReservationById(ReservationDTO reservationDTO)
     {
-        var reservation = new Reservation()
+        try
         {
-            ReservationId = reservationDTO.ReservationId,
-        };
-        var deletedReservation = await _reservationSeedData.DeleteReservation(reservation);
+            var reservation = new Reservation()
+            {
+                ReservationId = reservationDTO.ReservationId,
+            };
 
-        var deletedReservationDTO = new ReservationDTO()
+            var deletedReservation = await _reservationRepository.DeleteReservation(reservation);
+
+            if (deletedReservation == null)
+            {
+                return NotFound();
+            }
+
+            var deletedReservationDTO = new ReservationDTO()
+            {
+                ReservationId = deletedReservation.ReservationId,
+                CustomerName = deletedReservation.CustomerName,
+                PhoneNumber = deletedReservation.PhoneNumber,
+                MovieViewId = deletedReservation.MovieViewId,
+                NumberOfSeats = deletedReservation.NumberOfSeats,
+                ReservationPrice = deletedReservation.ReservationPrice,
+                DateForReservation = deletedReservation.DateForReservation
+            };
+
+            return Ok(deletedReservationDTO);
+        }
+        catch (Exception ex)
         {
-            ReservationId = deletedReservation.ReservationId,
-            CustomerName = deletedReservation.CustomerName,
-            PhoneNumber = deletedReservation.PhoneNumber,
-            MovieViewId = deletedReservation.MovieViewId,
-            NumberOfSeats = deletedReservation.NumberOfSeats,
-            ReservationPrice = deletedReservation.ReservationPrice,
-            DateForReservation = deletedReservation.DateForReservation
-        };
-        return Ok(deletedReservationDTO);
+            return StatusCode(StatusCodes.Status500InternalServerError, "Ett fel uppstod vid borttagning av reservation.");
+        }
     }
 }

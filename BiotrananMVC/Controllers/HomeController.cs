@@ -84,7 +84,7 @@ namespace BiotrananMVC.Controllers
                 {
                     if (m.MovieId == movieId)
                     {
-                        movie = new(m.Title, m.Description, m.Language, m.MovieLength, m.MaxViews, m.MoviePrice, m.Directors, m.Actors, m.ImageLink);
+                        movie = new(m.Title, m.Description, m.Language, m.MovieLength, m.MaxViews, m.MoviePrice, m.Directors, m.Actors, m.ImageLink, m.YearOfPublished);
                         break;
                     }
                 }
@@ -117,21 +117,8 @@ namespace BiotrananMVC.Controllers
                     movieView.Movie = movie;
                 }
             }
-
             return View(movieViews);
         }
-
-
-
-        // public async Task<IActionResult> UpcomingViews()
-        // {
-        //     var movieViews = await _iMovieService.GetMovieViewsFromApi();
-        //     if (movieViews == null)
-        //     {
-        //         return NotFound();
-        //     }
-        //     return View(movieViews);
-        // }
 
         public async Task<IActionResult> Index()
         {

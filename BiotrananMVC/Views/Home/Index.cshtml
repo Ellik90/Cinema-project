@@ -1,7 +1,44 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Välkommen till Bio Tranan";
 }
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="text-center">
+                <h1 class="display-4">Välkommen till Bio Tranan</h1>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-12">
+            <a href="@Url.Action("UpcomingViews", "Home")" class="btn btn-primary">Visa kommande filmvisningar</a>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        @foreach (var movie in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="movie-title">
+                    <h3><a asp-controller="Home" asp-action="MovieDetails" asp-route-movieId="@movie.MovieId">@movie.Title</a></h3>
+                    <img src="@movie.ImageLink" alt="@movie.Title" />
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+
+
+@* @{
+    ViewData["Title"] = "Välkommen till Bio Tranan";
+}
+
 
 <div class="container">
     <div class="row">
@@ -31,31 +68,9 @@
             </div>
         }
     </div>
-</div>
+</div> *@
 
 
-
-
-@* @{
-ViewData["Title"] = "Home Page";
-}
-
-<div class="text-center">
-<h1 class="display-4">Välkommen till Bio Tranan</h1>
-</div>
-
-<a href="@Url.Action("UpcomingViews", "Home")">Visa kommande filmvisningar</a>
-
-
-
-@model List<BiotrananMVC.Models.Movie>
-
-@foreach (var movie in @Model)
-{
-<div class="movie-title">
-<h3>@movie.Title</h3>
-</div>
-} *@
 
 
 

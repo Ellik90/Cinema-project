@@ -38,21 +38,6 @@ public class MovieRepository : IMovieRepository
         }
     }
 
-    // public async Task<List<Movie>> GetForDeleteAll()
-    // {
-    //     try
-    //     {
-    //         List<Movie> movies = await _myDbContext.movies.ToListAsync();
-    //         await _myDbContext.SaveChangesAsync();
-    //         return movies;
-    //     }
-    //     catch (Exception ex)
-    //     {
-    //         throw new Exception("Ett fel uppstod vid hämtning av filmer för radering.", ex);
-    //     }
-    // }
-
-
     public async Task<Movie> CreateMovie(Movie movie)
     {
         try
@@ -63,7 +48,7 @@ public class MovieRepository : IMovieRepository
         }
         catch (Exception ex)
         {
-            throw new Exception("Could not create movie", ex);
+            throw new Exception("Kunde inte skapa film", ex);
         }
     }
 

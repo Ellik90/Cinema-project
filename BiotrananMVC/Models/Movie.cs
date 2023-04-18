@@ -4,7 +4,6 @@ public class Movie
     public int MovieId { get; set; }
     public string Title { get; set; }
     public string Description { get; set; }
-    public int MovieViewsShown { get; set; }
     public int MaxViews { get; set; }
     public decimal MoviePrice { get; set; }
     public string Language { get; set; }
@@ -16,7 +15,7 @@ public class Movie
     public string Actors { get; set; }
     public string ImageLink { get; set; }
 
-    public Movie(string title, string description, string language, int movieLength, int maxViews, decimal maxPrice, string directors, string actors, string imageLink)
+    public Movie(string title, string description, string language, int movieLength, int maxViews, decimal maxPrice, string directors, string actors, string imageLink, int yearOfPublished)
     {
         Title = title;
         Description = description;
@@ -28,6 +27,8 @@ public class Movie
         Actors = actors;
         MovieLengthString = ConvertToHoursAndMinutes(movieLength);
         ImageLink = imageLink;
+        YearOfPublished = yearOfPublished;
+
     }
     public Movie() { }
     public static string ConvertToHoursAndMinutes(int movielength)

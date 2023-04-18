@@ -46,20 +46,20 @@ Utöver detta vill Bio Tranan, som drivs av erfarna utvecklare, ha ett REST API 
 - [x] Lista alla reservationer för en viss visning
 
 Regler för systemet:
-- [ ] En film får bara visas ett visst antal gånger. Det skall alltså inte gå att lägga till en film i schemat för visningar, om den redan visats max antal gånger.
-- [ ] Det ska inte gå att lägga till en filmvisning i schemat samma tid som en annan film visas i samma salong
-- [ ] Det skall inte gå att reservera platser på en visning om det inte finns tillräckligt många platser kvar
+- [x] En film får bara visas ett visst antal gånger. Det skall alltså inte gå att lägga till en film i schemat för visningar, om den redan visats max antal gånger.
+- [x] Det ska inte gå att lägga till en filmvisning i schemat samma tid som en annan film visas i samma salong
+- [x] Det skall inte gå att reservera platser på en visning om det inte finns tillräckligt många platser kvar
 
 ## Utöver dessa krav finns några extra VG-krav
 
 Hemsidan:
-- [ ] Visa det totala priset innan reservationen läggs (se bild)
+- [x] Visa det totala priset innan reservationen läggs (se bild)
 - [ ] Det skall gå att avboka en reservation
 - [ ] Använd ett externt api till något på hemsidan, exempelvis ett random advice från https://api.adviceslip.com/, eller mer avancerat: https://developers.themoviedb.org/3/getting-started/introduction
 - [ ] Reviews! Det skall gå att poängsätta filmer samt ge dem ett skriftligt omdöme genom att ange sin reservationskod, men bara efter att filmen visats.
 
 REST-API
-- [ ] Skapa en ny reservation
+- [x] Skapa en ny reservation
 - [ ] Det skall gå att lägga tillfälliga platsrestriktioner på en viss visning, utifall det blir nya pandemi-regler i höst
 - [ ] Kräv autentisering för att kunna användas (Valfri metod)
 - [ ] "Checka in" en reservationskod och sätt den som använd (Kommer att användas vid betalning)
@@ -90,7 +90,7 @@ Använd SQLite i ditt projekt som du comittar. Du kan använda InMemory och seed
 - Jag har tagit bort onödiga kommentarer
 - Jag har formaterat min kod fint
 - Jag har förstått vad min kod gör (mer eller mindre). Prova att försöka förklara högt för dig själv vad din kod gör. Ställ frågor som "Hur går det till när jag lägger till en film?" "Vad händer om jag försöker reservera 2000 biljetter på en visning?"
-- Jag har checkat av vilka funktionskrav jag anser att jag klarat genom att skrivaa ett x innanför [ ] i denna readmefil
+- Jag har checkat av vilka funktionskrav jag anser att jag klarat genom att skrivaa ett x innanför [x] i denna readmefil
 
 ![schema](schema.png)
 ![details](details.png)

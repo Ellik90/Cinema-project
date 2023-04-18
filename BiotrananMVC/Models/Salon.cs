@@ -2,7 +2,7 @@ namespace BiotrananMVC.Models;
 public class Salon
 {
     public int SalonId { get; set; }
-    public string SalonName { get; set; } // kommer inte med i view
+    public string SalonName { get; set; } 
     public int NumberOfSeats { get; set; }
     public int NumberOfRows { get; set; }   
     public ICollection<Seat> Seats { get; set; }   

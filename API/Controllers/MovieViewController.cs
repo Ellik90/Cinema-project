@@ -16,6 +16,7 @@ public class MovieViewController : ControllerBase
         _iMovieViewRepository = iMovieViewRepository;
         _iMovieRepository = iMovieRepository;
     }
+    
 
     [HttpPost]
     public async Task<ActionResult<MovieViewDTO>> CreateNewMovieViews(MovieViewDTO movieViewDTO)
@@ -29,6 +30,14 @@ public class MovieViewController : ControllerBase
             {
                 var existingMovieTitles = string.Join(", ", existingMovieViews.Select(existing => existing.MovieTitle));
                 return BadRequest($"En annan film, {existingMovieTitles}, visas i samma salong vid samma tidpunkt.");
+            }
+
+            var movie = await _iMovieRepository.GetMovieById(movieViewDTO.MovieId);
+            var movieViews = await _iMovieViewRepository.GetMovieViewsByMovieId(movieViewDTO.MovieId);
+
+            if (movieViews.Count() >= movie.MaxViews)
+            {
+                return BadRequest($"Max antal visningar har redan uppnåtts för filmen {movie.Title}");
             }
 
             var movieView = new MovieView()
@@ -55,6 +64,7 @@ public class MovieViewController : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
     }
+
 
     [HttpGet]
     public async Task<ActionResult<List<MovieViewDTO>>> GetAllMovieViews()
@@ -120,7 +130,7 @@ public class MovieViewController : ControllerBase
 
             var movieView = movieViews.Find(m => m.MovieViewId == movieViewDTO.MovieViewId);
             movieView.MovieViewId = movieViewDTO.MovieViewId;
-            movieView.MovieTitle = movieViewDTO?.MovieTitle; // Tilldelar MovieTitle från MovieViewDTO till movieView
+            movieView.MovieTitle = movieViewDTO?.MovieTitle;
             movieView.Date = movieViewDTO.Date;
             movieView.MovieId = movieViewDTO.MovieId;
             movieView.SalonId = movieViewDTO.SalonId;

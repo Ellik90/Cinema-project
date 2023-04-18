@@ -25,6 +25,7 @@ public class MovieViewRepository : IMovieViewRepository
             throw new Exception("Ett fel uppstod", ex);
         }
     }
+
     public async Task<List<MovieView>> GetMovieViews()
     {
         try
@@ -98,20 +99,6 @@ public class MovieViewRepository : IMovieViewRepository
             throw new Exception($"Ett fel uppstod vid hämtning av views: {ex.Message}");
         }
     }
-
-    // public async Task<MovieView> GetMovieViewById(int movieViewId)
-    // {
-    //     try
-    //     {
-    //         List<MovieView> getMovieView = new();
-    //         getMovieView = await _myDbContext.views.ToListAsync();
-    //         return getMovieView.Find(g => g.MovieViewId == movieViewId);
-    //     }
-    //     catch (Exception)
-    //     {
-    //         return null;
-    //     }
-    // }
 
     public async Task<List<MovieView>> GetUpcomingMovieViews()
     {

@@ -5,7 +5,6 @@ public class Movie
     public string Title { get; set; }
     public decimal MoviePrice { get; set; }
     public string Description { get; set; }
-    public int MovieViewsShown { get; set; }
     public int MaxViews { get; set; }
     public string Language { get; set; }
     public int MovieLength { get; set; }
@@ -15,7 +14,7 @@ public class Movie
     public string Actors { get; set; }
      public string ImageLink { get; set; } 
 
-    public Movie(string title, string description, string language, decimal moviePrice, int movieLenght, int maxViews, string directors, string actors)
+    public Movie(string title, string description, string language, decimal moviePrice, int movieLenght, int maxViews, string directors, string actors, int yearOfPublished)
     {
         Title = title;
         Description = description;
@@ -25,6 +24,7 @@ public class Movie
         MaxViews = maxViews;
         Directors = directors;
         Actors = actors;
+        YearOfPublished = yearOfPublished;
     }
     public Movie() { }
 }

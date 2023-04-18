@@ -2,11 +2,10 @@
 
 <div class="text-center">
     <h1 class="display-4">Bekräfta reservation</h1>
-    <h2 class="display-4">>> @Model.Movie.Title <<< /h2>
+    <h2 class="display-4">>> @Model.Movie.Title << </h2>
             <h3 class="lead"><strong>Dag:</strong> @Model.MovieView.Date.ToShortDateString() <strong>Tid:</strong>
                 @Model.MovieView.Date.ToShortTimeString()</h3>
 </div>
-
 
 <form method="post" asp-controller="Home" asp-action="BookedReservations">
     <div class="form-group">

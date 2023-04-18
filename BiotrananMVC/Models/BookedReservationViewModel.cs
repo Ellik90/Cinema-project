@@ -8,6 +8,7 @@ public class BookedReservationViewModel
     public int NumberOfSeats { get; set; }
     public DateTime DateForMovieView { get; set; }
     public string MovieTitle { get; set; }
+
     public BookedReservationViewModel(int reservationId, string customerName, string phoneNumber,
     int numberOfSeats, DateTime dateForMovieView, string movieTitle)
     {
@@ -18,5 +19,4 @@ public class BookedReservationViewModel
         DateForMovieView = dateForMovieView;
         MovieTitle = movieTitle;
     }
-
 }

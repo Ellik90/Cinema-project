@@ -14,8 +14,9 @@ public class Movie
     public List<MovieView> movieViews { get; set; }
     public string Directors { get; set; }
     public string Actors { get; set; }
+    public string ImageLink { get; set; }
 
-    public Movie(string title, string description, string language, int movieLength, int maxViews, decimal maxPrice, string directors, string actors)
+    public Movie(string title, string description, string language, int movieLength, int maxViews, decimal maxPrice, string directors, string actors, string imageLink)
     {
         Title = title;
         Description = description;
@@ -26,6 +27,7 @@ public class Movie
         Directors = directors;
         Actors = actors;
         MovieLengthString = ConvertToHoursAndMinutes(movieLength);
+        ImageLink = imageLink;
     }
     public Movie() { }
     public static string ConvertToHoursAndMinutes(int movielength)

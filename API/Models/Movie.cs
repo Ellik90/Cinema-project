@@ -13,6 +13,7 @@ public class Movie
     public List<MovieView> movieViews { get; set; }
     public string Directors { get; set; }
     public string Actors { get; set; }
+     public string ImageLink { get; set; } 
 
     public Movie(string title, string description, string language, decimal moviePrice, int movieLenght, int maxViews, string directors, string actors)
     {

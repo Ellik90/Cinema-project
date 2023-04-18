@@ -4,6 +4,8 @@
         <h3><a asp-controller="Home" asp-action="MovieDetails"
             asp-route-movieId="@movieView.MovieId">@movieView.MovieTitle</a></h3>
 
+        <img src="@movieView.Movie.ImageLink">
+
         <h4>Visas i salong: @movieView.SalonId</h4>
         <h4>Datum för visning: @movieView.Date.ToShortDateString()</h4>
         <h4>Tid för visning: @movieView.Date.ToShortTimeString()</h4>
@@ -17,6 +19,7 @@
     </div>
     <hr>
 }
+
 
 
 

@@ -1,5 +1,6 @@
 using API.Models;
 using Microsoft.EntityFrameworkCore;
+using API.Interface;
 
 namespace API.Data;
 public class ReservationRepository : IReservationRepository

@@ -22,7 +22,7 @@ namespace BiotrananMVC.Controllers
                 var movieViews = await _iMovieService.GetMovieViewsFromApi();
                 var movieView = movieViews.Find(m => m.MovieViewId == movieViewId);
 
-                var movies = await _iMovieService.GetMoviesFromApi(); //by id direkt istället
+                var movies = await _iMovieService.GetMoviesFromApi();
                 var movie = movies.Find(m => m.MovieId == movieView.MovieId);
 
                 var reservation = new Reservation();
@@ -34,7 +34,7 @@ namespace BiotrananMVC.Controllers
             }
             catch (Exception ex)
             {
-                return RedirectToAction("Error", "Home", new { message = ex.Message });
+                return null;
             }
         }
 
@@ -84,7 +84,7 @@ namespace BiotrananMVC.Controllers
                 {
                     if (m.MovieId == movieId)
                     {
-                        movie = new(m.Title, m.Description, m.Language, m.MovieLength, m.MaxViews, m.MoviePrice, m.Directors, m.Actors);
+                        movie = new(m.Title, m.Description, m.Language, m.MovieLength, m.MaxViews, m.MoviePrice, m.Directors, m.Actors, m.ImageLink);
                         break;
                     }
                 }
@@ -103,12 +103,35 @@ namespace BiotrananMVC.Controllers
         public async Task<IActionResult> UpcomingViews()
         {
             var movieViews = await _iMovieService.GetMovieViewsFromApi();
-            if (movieViews == null)
+            var movies = await _iMovieService.GetMoviesFromApi();
+            if (movieViews == null || movies == null)
             {
                 return NotFound();
             }
+
+            foreach (var movieView in movieViews)
+            {
+                var movie = movies.FirstOrDefault(m => m.MovieId == movieView.MovieId);
+                if (movie != null)
+                {
+                    movieView.Movie = movie;
+                }
+            }
+
             return View(movieViews);
         }
+
+
+
+        // public async Task<IActionResult> UpcomingViews()
+        // {
+        //     var movieViews = await _iMovieService.GetMovieViewsFromApi();
+        //     if (movieViews == null)
+        //     {
+        //         return NotFound();
+        //     }
+        //     return View(movieViews);
+        // }
 
         public async Task<IActionResult> Index()
         {

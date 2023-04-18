@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using API.Models;
 using API.DTO;
-using API.Data;
+using API.Interface;
 
 namespace API.Controllers;
 
@@ -36,7 +36,8 @@ public class MovieController : ControllerBase
                 MoviePrice = m.MoviePrice,
                 Language = m.Language,
                 Directors = m.Directors,
-                Actors = m.Actors
+                Actors = m.Actors,
+                ImageLink = m.ImageLink
             }).ToList();
             return Ok(movieDtos);
         }
@@ -63,7 +64,8 @@ public class MovieController : ControllerBase
                 Language = oneMovie.Language,
                 MoviePrice = oneMovie.MoviePrice,
                 Directors = oneMovie.Directors,
-                Actors = oneMovie.Actors
+                Actors = oneMovie.Actors,
+                ImageLink = oneMovie.ImageLink
             };
             return Ok(movieDto);
         }
@@ -91,7 +93,8 @@ public class MovieController : ControllerBase
                 MaxViews = movieDto.MaxViews,
                 MoviePrice = movieDto.MoviePrice,
                 Directors = movieDto.Directors,
-                Actors = movieDto.Actors
+                Actors = movieDto.Actors,
+                ImageLink = movieDto.ImageLink
             };
 
             await _iMovieRepository.CreateMovie(movie);
@@ -122,6 +125,7 @@ public class MovieController : ControllerBase
             movie.MoviePrice = movieDto.MoviePrice;
             movie.Directors = movieDto.Directors;
             movie.Actors = movieDto.Actors;
+            movie.ImageLink = movieDto.ImageLink;
 
             await _iMovieRepository.UpdateMovie(movie);
             return Ok(movieDto);

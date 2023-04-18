@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using API.Models;
 using API.DTO;
-using API.Data;
+using API.Interface;
 
 namespace API.Controllers;
 
@@ -100,7 +100,7 @@ public class MovieViewController : ControllerBase
                 SalonId = v.SalonId,
                 SalonName = v.Salon?.SalonName,
                 Date = v.Date,
-                AvailableSeats = v.AvailableSeats
+                AvailableSeats = v.AvailableSeats,
             }).ToList();
 
             return Ok(movieViewDTOs);

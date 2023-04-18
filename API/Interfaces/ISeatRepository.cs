@@ -1,6 +1,6 @@
 using API.Models;
 
-namespace API.Data
+namespace API.Interface
 {
     public interface ISeatRepository
     {

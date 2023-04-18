@@ -1,5 +1,6 @@
 using API.Models;
 using Microsoft.EntityFrameworkCore;
+using API.Interface;
 
 namespace API.Data;
 public class MovieViewRepository : IMovieViewRepository
@@ -124,7 +125,8 @@ public class MovieViewRepository : IMovieViewRepository
                 {
                     MovieId = v.MovieId,
                     Date = v.Date,
-                    SalonId = v.SalonId
+                    SalonId = v.SalonId,
+                    Movie = v.Movie
                 })
                 .ToListAsync();
             return upcomingViews;

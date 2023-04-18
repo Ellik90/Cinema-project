@@ -14,11 +14,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<API.Data.IMovieRepository, API.Data.MovieRepository>();
-builder.Services.AddScoped<API.Data.ISalonRepository, API.Data.SalonRepository>();
-builder.Services.AddScoped<API.Data.IMovieViewRepository, API.Data.MovieViewRepository>();
-builder.Services.AddScoped<API.Data.ISeatRepository, API.Data.SeatRepository>();
-builder.Services.AddScoped<API.Data.IReservationRepository, API.Data.ReservationRepository>();
+builder.Services.AddScoped<API.Interface.IMovieRepository, API.Data.MovieRepository>();
+builder.Services.AddScoped<API.Interface.ISalonRepository, API.Data.SalonRepository>();
+builder.Services.AddScoped<API.Interface.IMovieViewRepository, API.Data.MovieViewRepository>();
+builder.Services.AddScoped<API.Interface.ISeatRepository, API.Data.SeatRepository>();
+builder.Services.AddScoped<API.Interface.IReservationRepository, API.Data.ReservationRepository>();
 builder.Services.AddDbContext<API.Data.MyDbContext>
 (o => o.UseSqlite("DataBase"));
 var app = builder.Build();

@@ -5,14 +5,7 @@
 </div>
 
 <div class="movie-details">
-    @if(Model.Title == "Djupet")
-    {
-         <img src="@Url.Content("~/css/DJUPET.jpg")">
-    }
-    else if(Model.Title == "Man of steel")
-    {
-        
-    }
+    <img src="@Model.ImageLink">
     <h3>@Model.Title</h3>
     <p>Beskrivning: @Model.Description</p>
     <p>Regissör: @Model.Directors</p>
@@ -23,7 +16,6 @@
 
 <h3>
     <a asp-controller="Home" asp-action="UpcomingViews">Tillbaka</a>
-
-    @* <a asp-controller="Home" asp-action="MovieReservation" asp-route-id="@Model.MovieId">Reservera</a> *@
 </h3>
+
 

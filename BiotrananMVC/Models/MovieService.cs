@@ -59,7 +59,6 @@ public class MovieService : IMovieService
     //     }
     // }
 
-
     public async Task<List<MovieView>> GetMovieViewsFromApi()
     {
         try

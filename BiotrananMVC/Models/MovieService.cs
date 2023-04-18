@@ -20,19 +20,6 @@ public class MovieService : IMovieService
         }
     }
 
-    // public async Task<List<Movie>> GetReservations()
-    // {
-    //     try
-    //     {
-    //         var response = await _client.GetFromJsonAsync<List<Movie>>("https://localhost:7146/Reservation");
-    //         return response;
-    //     }
-    //     catch (Exception)
-    //     {
-    //         throw new Exception();
-    //     }
-    // }
-
     public async Task<List<Movie>> GetMoviesFromApi()
     {
         try
@@ -45,19 +32,6 @@ public class MovieService : IMovieService
             throw new Exception();
         }
     }
-
-    //    public async Task<List<Movie>> GetMovieByIdFromApi(int id)
-    // {
-    //     try
-    //     {
-    //         var movie = await _client.GetFromJsonAsync<List<Movie>>($"https://localhost:7146/Movie/{id}");
-    //         return movie;
-    //     }
-    //     catch (Exception)
-    //     {
-    //         throw new Exception();
-    //     }
-    // }
 
     public async Task<List<MovieView>> GetMovieViewsFromApi()
     {

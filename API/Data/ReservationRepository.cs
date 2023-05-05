@@ -28,6 +28,7 @@ public class ReservationRepository : IReservationRepository
             var reservedSeats = await _myDbContext.reservations
                 .Where(r => r.MovieViewId == movieViewId)
                 .SumAsync(r => r.NumberOfSeats);
+                
             return show.Salon.NumberOfSeats - reservedSeats;
         }
         catch (Exception ex)
